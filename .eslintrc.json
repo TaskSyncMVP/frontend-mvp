@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@feature-sliced/recommended"
+  ],
+  "plugins": ["@feature-sliced"],
+  "rules": {
+    "@feature-sliced/layers-slice": ["error", {
+      "alias": "@",
+      "ignorePatterns": [
+        "**/test/**",
+        "**/storybook/**",
+        "**/*.stories.*",
+        "**/*.test.*"
+      ]
+    }]
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "./tsconfig.json"
+      }
+    }
+  }
+}
