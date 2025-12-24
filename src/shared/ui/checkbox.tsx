@@ -1,14 +1,14 @@
 "use client"
 
-import * as React from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import {Check} from "lucide-react"
+import * as React from "react"
 
 import {cn} from "@/lib/utils"
 
 type TaskLevel = "low" | "medium" | "high"
 
-interface TaskCheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+export interface TaskCheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
     level?: TaskLevel
 }
 

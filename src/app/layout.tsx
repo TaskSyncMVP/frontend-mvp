@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import "../app/styles/globals.css";
+import Head from "next/head";
+import "./styles/globals.css";
 import {Lexend_Deca} from "next/font/google";
 
 const lexendDeca = Lexend_Deca({
@@ -19,9 +20,37 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-        <body className={`${lexendDeca.variable}`} >
-        {children}
-        </body>
+            <Head>
+                {/* Preload критически важных изображений */}
+                <link
+                    rel="preload"
+                    href="/icon/actions/home.svg"
+                    as="image"
+                    type="image/svg+xml"
+                />
+                <link
+                    rel="preload"
+                    href="/icon/actions/profile-2user.svg"
+                    as="image"
+                    type="image/svg+xml"
+                />
+                {/* DNS prefetch для внешних ресурсов */}
+                <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+                {/* Resource hints для производительности */}
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+            </Head>
+            <body className={`${lexendDeca.variable}`} >
+                <div className="px-6 relative">
+                    <div className="absolute inset-0 -z-10 pointer-events-none">
+                        <div className="absolute top-0 right-0 w-36 h-36 bg-yellow-100 rounded-full blur-3xl"/>
+                        <div className="absolute top-[6rem] left-0 w-36 h-36 bg-green-100 rounded-full blur-3xl"/>
+                        <div className="absolute top-[15rem] right-0 w-36 h-36 bg-blue-500 rounded-full opacity-25 blur-3xl"/>
+                        <div className="absolute top-[30rem] left-1/3 transform -translate-x-1/2 -translate-y-1/2 w-36 h-36 bg-blue-500 opacity-25 rounded-full blur-3xl"/>
+                    </div>
+
+                    {children}
+                </div>
+            </body>
         </html>
     );
 }

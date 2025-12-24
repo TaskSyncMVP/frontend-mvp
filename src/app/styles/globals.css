@@ -17,11 +17,10 @@
     --text-primary: rgba(171, 148, 255, 1);
     --text-color-main: rgba(0, 0, 0, 1);
     --color-secondary: rgba(255, 255, 255, 1);
-    --text-muted: rgba(110, 106, 124, 1); /* Gray-500 */
-    --muted: rgba(36, 37, 44, 1);
+    --muted: rgba(110, 106, 124, 1);
     --bold: 700;
     --semibold: 600;
-    --redular: 400;
+    --regular: 400;
 
     /* Уровни задач - старые rgba значения (оставлены для совместимости) */
     --level-task-medium-text: rgba(95, 51, 225, 1);
@@ -54,13 +53,12 @@
 
 body {
     min-height: 100vh;
-    font-family: var(--font-lexend-deca-sans) , Arial, Helvetica, sans-serif;
+    font-family: var(--font-lexend-deca-sans), Arial, Helvetica, sans-serif;
 }
 
 
-
 @layer base {
-  :root {
+    :root {
 
         --text-xs: calc(12 / 16 * 1rem);
         --text-sm: calc(14 / 16 * 1rem);
@@ -68,6 +66,8 @@ body {
         --text-lg: calc(24 / 16 * 1rem);
         --text-xl: calc(32 / 16 * 1rem);
         --text-2xl: calc(44 / 16 * 1rem);
+
+        --muted: 253, 8%, 45%;
 
         --background: 0 0% 100%;
 
@@ -120,12 +120,12 @@ body {
 }
 
 
-
 @layer base {
-  * {
-    @apply border-border;
+    * {
+        @apply border-border;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    body {
+        @apply bg-background text-foreground;
     }
 }

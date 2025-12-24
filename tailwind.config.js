@@ -117,8 +117,10 @@ module.exports = {
           '-webkit-mask-image': 'url(/buttonForm.svg)',
           'mask-image': 'url(/buttonForm.svg)',
           'mask-repeat': 'no-repeat',
-          'mask-size': '100% 100%',
-          '-webkit-mask-size': '100% 100%'
+          'mask-size': 'contain',
+          '-webkit-mask-size': 'contain',
+          'mask-position': 'center',
+          '-webkit-mask-position': 'center'
         }
       })
     }
