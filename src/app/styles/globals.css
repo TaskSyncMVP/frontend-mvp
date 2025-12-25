@@ -6,11 +6,9 @@
 
 
 :root {
-    /* Основные цвета бренда */
     --primary: rgba(95, 51, 225, 1);
     --primary-30: rgba(237, 232, 255, 1);
 
-    /* Pomodoro таймер */
     --pomodoro-timer: rgba(244, 120, 184, 1);
     --pomodoro-timer-background: rgba(255, 228, 242, 1);
 
@@ -22,7 +20,6 @@
     --semibold: 600;
     --regular: 400;
 
-    /* Уровни задач - старые rgba значения (оставлены для совместимости) */
     --level-task-medium-text: rgba(95, 51, 225, 1);
     --level-task-medium-bg: rgba(237, 232, 255, 1);
 
@@ -32,12 +29,10 @@
     --level-task-low-text: rgba(0, 135, 255, 1);
     --level-task-low-bg: rgba(227, 242, 255, 1);
 
-    /* Радиусы скругления */
     --radius: 15px;
     --soft-radius: 7px;
     --large-radius: 20px;
 
-    /* Тени */
     --drop-shadow: rgba(0, 0, 0, 0.04);
     --drop-shadow-length: 0px 8px 32px;
 
@@ -47,7 +42,6 @@
     --extra-large-drop-shadow: rgba(95, 51, 225, 0.6);
     --extra-large-drop-shadow-length: 4px 16px 32px;
 
-    /* Прозрачность */
     --bg-opacity: 0.8;
 }
 
@@ -59,7 +53,6 @@ body {
 
 @layer base {
     :root {
-
         --text-xs: calc(12 / 16 * 1rem);
         --text-sm: calc(14 / 16 * 1rem);
         --text-base: calc(19 / 16 * 1rem);
@@ -107,7 +100,6 @@ body {
 
         --radius: 0.5rem;
 
-        /* Task level colors */
         --level-task-low-bg: 210 100% 95%;
         --level-task-low-text: 210 100% 53%;
 

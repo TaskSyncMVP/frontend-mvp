@@ -42,7 +42,7 @@ export function NavItem({ iconType }: NavItemProps) {
                 alt={iconType}
                 width={24}
                 height={24}
-                className="primary-100"/>
+                className="filter-primary"/>
         </button>
     )
 }

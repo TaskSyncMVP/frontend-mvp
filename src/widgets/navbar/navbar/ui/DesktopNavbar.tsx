@@ -45,12 +45,15 @@ export function DesktopNavbar() {
         <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-10 bg-primary-30 border
         border-primary-100/20 shadow-sm rounded-full">
             <div className="px-8 py-3">
-                <nav className="flex items-center gap-8">
-                    <DesktopNavItem iconType="home" href="/home" isActive={pathname === '/home'}/>
-                    <DesktopNavItem iconType="calendar" href="/time-blocking" isActive={pathname === '/time-blocking'}/>
-                    <DesktopNavItem iconType="document" href="/daily" isActive={pathname === '/daily'}/>
-                    <DesktopNavItem iconType="profile-2user" href="/menu" isActive={pathname === '/menu'}/>
-                </nav>
+                <div className="flex items-center justify-between gap-8">
+                    <nav className="flex items-center gap-8">
+                        <DesktopNavItem iconType="home" href="/home" isActive={pathname === '/home'}/>
+                        <DesktopNavItem iconType="calendar" href="/time-blocking" isActive={pathname === '/time-blocking'}/>
+                        <DesktopNavItem iconType="document" href="/daily" isActive={pathname === '/daily'}/>
+                        <DesktopNavItem iconType="profile-2user" href="/menu" isActive={pathname === '/menu'}/>
+                    </nav>
+
+                </div>
             </div>
         </div>
     );

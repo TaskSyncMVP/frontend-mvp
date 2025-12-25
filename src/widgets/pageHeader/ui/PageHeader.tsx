@@ -1,3 +1,5 @@
+'use client';
+
 import Image from "next/image";
 
 import {Button} from "@shared/ui/button";
@@ -6,12 +8,15 @@ import {PageHeaderProps} from "@widgets/pageHeader";
 
 
 export function PageHeader({ title }: PageHeaderProps) {
+    const handleGoBack = () => {
+        window.history.back();
+    };
     return (
         <>
             <div className="lg:hidden">
                 <div className="max-w-7xl mx-auto">
                     <div className='flex flex-row justify-between items-center'>
-                        <Button size="icon" variant="icon" className="rotate-180">
+                        <Button size="icon" variant="icon" className="rotate-180" onClick={handleGoBack}>
                             <Image
                                 src="/icon/actions/arrow.svg"
                                 alt="arrow"
@@ -35,7 +40,7 @@ export function PageHeader({ title }: PageHeaderProps) {
             </div>
 
             <div className='hidden lg:flex lg:items-center lg:gap-4 lg:fixed lg:top-12 lg:left-[50px] lg:z-20'>
-                <Button size="icon" variant="icon" className="rotate-180">
+                <Button size="icon" variant="icon" className="rotate-180" onClick={handleGoBack}>
                     <Image
                         src="/icon/actions/arrow.svg"
                         alt="arrow"
