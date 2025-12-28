@@ -7,8 +7,8 @@ export default function AuthLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="relative min-h-screen flex flex-col overflow-hidden justify-center">
-            <div>
+        <div className="relative min-h-screen flex flex-col justify-center items-center">
+            <div className="w-full max-w-[331px] relative">
                 <div className="absolute left-[35%] top-[18.5%]">
                     <Image
                         src="/female-with-notebook.svg"
@@ -45,7 +45,7 @@ export default function AuthLayout({
                     />
                 </div>
 
-                <div className="absolute top-[28%] right-[17%]">
+                <div className="absolute top-[28%] right-[12%]">
                     <Image
                         src="/notifications.svg"
                         width={62}
@@ -71,10 +71,11 @@ export default function AuthLayout({
                         alt="Coffee icon"
                     />
                 </div>
-            </div>
 
-            <div className="z-10 flex flex-col justify-center mt-[32rem] max-w-lg mb-4">
-                {children}
+                {/* Контент формы */}
+                <div className="relative z-10 flex flex-col justify-center mt-[32rem] mb-4">
+                    {children}
+                </div>
             </div>
         </div>
     );
