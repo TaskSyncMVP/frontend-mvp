@@ -3,19 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-
-const iconMap = {
-    'profile-2user': '/icon/actions/profile-2user.svg',
-    'home': '/icon/actions/home.svg',
-    'document': '/icon/actions/document.svg',
-    'calendar': '/icon/actions/calendar.svg',
-};
-
-interface NavItemProps {
-    iconType: keyof typeof iconMap;
-    href: string;
-    isActive?: boolean;
-}
+import { iconMap, NavItemProps } from "../props/navItem-props";
 
 export function DesktopNavItem({iconType, href, isActive = false}: NavItemProps) {
     return (

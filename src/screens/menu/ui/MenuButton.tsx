@@ -5,11 +5,16 @@ interface MenuButtonProps {
     icon: string;
     alt: string;
     children: React.ReactNode;
+    onClick?: () => void;
 }
 
-export function MenuButton({ icon, alt, children }: MenuButtonProps) {
+export function MenuButton({ icon, alt, children, onClick }: MenuButtonProps) {
     return (
-        <Button variant="secondary" className="flex items-center gap-2 py-5">
+        <Button
+            variant="secondary"
+            className="flex items-center gap-2 py-5"
+            onClick={onClick}
+        >
             <Image
                 src={icon}
                 alt={alt}

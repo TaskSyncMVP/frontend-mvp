@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from './Navbar';
 import { DesktopNavbar } from './DesktopNavbar';
+import { CreateTaskModal } from '@features/tasks';
 
 export function ResponsiveNavbar() {
     const [isDesktop, setIsDesktop] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const checkScreenSize = () => {
@@ -19,5 +21,17 @@ export function ResponsiveNavbar() {
         return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
-    return isDesktop ? <DesktopNavbar /> : <Navbar />;
+    if (isDesktop) {
+        return <DesktopNavbar />;
+    }
+
+    return (
+        <>
+            <Navbar onModalToggle={() => setIsModalOpen(prev => !prev)} />
+            <CreateTaskModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
+        </>
+    );
 }

@@ -1,2 +1,2 @@
 export { PageHeader } from './ui/PageHeader';
-export type {PageHeaderProps} from './pageHeader-props'
+export type { PageHeaderProps } from './props/pageHeader-props';
