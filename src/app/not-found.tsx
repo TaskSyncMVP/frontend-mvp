@@ -1,73 +1,21 @@
-import {
-    Input, Button, TaskCheckbox, Badge, Label, Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@shared/ui";
-import {Navbar} from "@widgets/navbar";
-import {Check} from "lucide-react";
+'use client';
 
-export default function Page() {
+import {LinkButton} from "@shared/ui";
+import {FileQuestion} from "lucide-react";
+
+export default function NotFoundPage() {
     return (
-        <div className="px-5">
-            <div className="grid grid-cols-1 gap-3 max-w-2xl">
-                <h1 className="text-2xl">Error Page</h1>
-                <div className='flex flex-1 gap-1 max-w-2xl'>
-                    <Input type='input' placeholder="Email"/>
-                    <Input type='password' placeholder="Password"/>
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+                <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full
+                flex items-center justify-center">
+                    <FileQuestion className="w-16 h-16 text-white" />
                 </div>
-                <Button>Lets</Button>
-                <Button variant='secondary' size='lg'>Lets</Button>
-
-                <Button variant="primary" size='lg'>Primary</Button>
-                <div className='flex gap-2'>
-                    <TaskCheckbox level="high"/>
-                    <TaskCheckbox level="high"/>
-                    <TaskCheckbox level="low"/>
-                    <TaskCheckbox level="low"/>
-                    <TaskCheckbox level="medium"/>
-                    <TaskCheckbox level="medium"/>
-                </div>
-                <div className='inline-flex gap-2'>
-                    <Badge variant="low">Low</Badge>
-                    <Badge variant="medium">Medium</Badge>
-                    <Badge variant="high">High</Badge>
-                </div>
-
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button>Open Dialog</Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>New Task</DialogTitle>
-                        </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-1 gap-2">
-                                <div className="flex gap-2 flex-col">
-                                    <Label>Name</Label>
-                                    <Input placeholder="Name"/>
-                                </div>
-                                <div className="grid grid-cols-1 gap-2">
-                                    <h1 className="text-sm">Priority</h1>
-                                    <div className='inline-flex gap-2'>
-                                        <Badge variant="low">Low</Badge>
-                                        <Badge variant="medium">Medium</Badge>
-                                        <Badge variant="high">High</Badge>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex justify-center gap-2">
-                            <Button className="w-1/3 rounded-soft">
-                                <Check/>
-                            </Button>
-                        </div>
-                    </DialogContent>
-                </Dialog>
-                <Navbar/>
+                <h1 className="text-xl font-semibold text-gray-800 mb-4">Oooops!</h1>
+                <p className="text-lg text-gray-600 mb-8">This page has decided to take a day off.
+                </p>
+                <LinkButton size="lg" href="/home">Return home</LinkButton>
             </div>
         </div>
-    )
+    );
 }

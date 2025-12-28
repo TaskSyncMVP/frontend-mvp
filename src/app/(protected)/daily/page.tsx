@@ -1,6 +1,6 @@
 'use client';
 
-import {DailyPage} from "@/widgets";
+import {DailyPage} from "@/screens";
 
 export default function Page() {
     return <DailyPage/>

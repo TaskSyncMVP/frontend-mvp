@@ -1,10 +1,7 @@
 'use client';
 
-export default function Page() {
+import {HomePage} from "@/screens";
 
-    return (
-        <div>
-            <h1>Home Page</h1>
-        </div>
-    );
+export default function Page() {
+    return <HomePage />;
 }

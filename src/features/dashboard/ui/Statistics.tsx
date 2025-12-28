@@ -1,16 +1,5 @@
 import { StatisticCard } from './StatisticCard';
-
-interface StatisticsData {
-    totalTasks: number;
-    completedTasks: number;
-    todayTasks: number;
-    weekTasks: number;
-}
-
-interface StatisticsProps {
-    data?: StatisticsData;
-    isLoading?: boolean;
-}
+import {StatisticsProps} from "@features/dashboard/lib/statistics-props";
 
 export function Statistics({ data, isLoading = false }: StatisticsProps) {
     if (isLoading) {

@@ -1,0 +1,1 @@
+export type {DayCardProps} from './dayCard-props'

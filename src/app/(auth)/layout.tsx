@@ -73,7 +73,7 @@ export default function AuthLayout({
                 </div>
             </div>
 
-            <div className=" z-10 flex flex-col justify-center mt-[35rem] max-w-lg">
+            <div className="z-10 flex flex-col justify-center mt-[32rem] max-w-lg mb-4">
                 {children}
             </div>
         </div>

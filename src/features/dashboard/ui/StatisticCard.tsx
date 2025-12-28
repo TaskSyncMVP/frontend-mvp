@@ -1,9 +1,5 @@
 import { cn } from "@/lib/utils";
-
-interface StatisticCardProps {
-    className?: string;
-    children: React.ReactNode;
-}
+import {StatisticCardProps} from "@features/dashboard/lib/statisticsCard-props";
 
 export function StatisticCard({ className, children }: StatisticCardProps) {
     return (

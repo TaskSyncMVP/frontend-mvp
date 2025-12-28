@@ -1,4 +1,4 @@
-import {MainPage} from "@/widgets";
+import {MainPage} from "@/screens";
 
 export default function Page (){
     return <MainPage/>
