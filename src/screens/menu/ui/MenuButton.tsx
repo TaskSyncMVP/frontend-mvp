@@ -12,7 +12,7 @@ export function MenuButton({ icon, alt, children, onClick }: MenuButtonProps) {
     return (
         <Button
             variant="secondary"
-            className="flex items-center gap-2 py-5"
+            className="flex gap-2 lg:py-8 lg:text-base lg:px-12 lg:gap-3"
             onClick={onClick}
         >
             <Image
@@ -20,6 +20,7 @@ export function MenuButton({ icon, alt, children, onClick }: MenuButtonProps) {
                 alt={alt}
                 width={24}
                 height={24}
+                className="w-6 h-6 lg:w-9 lg:h-9"
             />
             {children}
         </Button>
