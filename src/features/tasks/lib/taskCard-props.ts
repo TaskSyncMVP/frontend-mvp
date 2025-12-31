@@ -1,6 +1,7 @@
 export type TaskLevel = "low" | "medium" | "high";
 
 export interface TaskCardProps {
+    id: string;
     title: string;
     status: string;
     level?: TaskLevel;

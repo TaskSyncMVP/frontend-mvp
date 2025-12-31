@@ -53,17 +53,6 @@ body {
     font-family: var(--font-lexend-deca-sans), Arial, Helvetica, sans-serif;
 }
 
-/* Safe area support for mobile devices */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-    body {
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-
-    /* Navbar adjustments */
-    .mobile-navbar {
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-}
 
 .nunito-font {
     font-family: var(--font-nunito), Arial, Helvetica, sans-serif;
@@ -139,4 +128,9 @@ body {
     body {
         @apply bg-background text-foreground;
     }
+}
+
+
+html, body {
+    overflow-y: hidden !important;
 }

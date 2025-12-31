@@ -25,22 +25,26 @@ export function Statistics({ data, isLoading = false }: StatisticsProps) {
 
     return (
         <div className="grid grid-cols-2 gap-5">
-            <StatisticCard className="bg-white">
-                <h3 className="text-sm font-regular text-text-main">Total</h3>
-                <p className="text-xl font-semibold text-text-main">{data.totalTasks}</p>
-            </StatisticCard>
-            <StatisticCard className="bg-primary-100">
-                <h3 className="text-sm font-regular text-white">Completed tasks</h3>
-                <p className="text-xl font-semibold text-white">{data.completedTasks}</p>
-            </StatisticCard>
-            <StatisticCard className="bg-primary-100">
-                <h3 className="text-sm font-regular text-white">Today tasks</h3>
-                <p className="text-xl font-semibold text-white">{data.todayTasks}</p>
-            </StatisticCard>
-            <StatisticCard className="bg-white">
-                <h3 className="text-sm font-regular text-text-main">Week tasks</h3>
-                <p className="text-xl font-semibold text-text-main">{data.weekTasks}</p>
-            </StatisticCard>
+            <StatisticCard
+                variant="secondary"
+                title="Total"
+                value={data.totalTasks}
+            />
+            <StatisticCard
+                variant="primary"
+                title="Completed tasks"
+                value={data.completedTasks}
+            />
+            <StatisticCard
+                variant="primary"
+                title="Today tasks"
+                value={data.todayTasks}
+            />
+            <StatisticCard
+                variant="secondary"
+                title="Week tasks"
+                value={data.weekTasks}
+            />
         </div>
     );
 }
