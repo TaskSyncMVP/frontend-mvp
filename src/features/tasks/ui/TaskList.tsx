@@ -102,7 +102,7 @@ export function TaskList({
         onTaskToggle?.(taskId, checked);
     };
     return (
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 overflow-y-auto pb-4 max-h-96 gap-4 ${className}`}>
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 pb-4 overflow-y-auto gap-4 ${className}`}>
             {tasks.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                     {emptyStateMessage}

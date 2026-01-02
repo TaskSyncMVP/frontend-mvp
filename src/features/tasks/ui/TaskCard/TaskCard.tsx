@@ -10,13 +10,12 @@ export function TaskCard({
                              onToggle
                          }: TaskCardProps) {
     return (
-        <div className="w-full bg-white rounded-large grid grid-cols-[1fr_auto] items-center px-4 py-3.5
-        shadow-drop border-border gap-4 lg:max-w-sm">
-            <div className="grid gap-7">
+        <div className="w-full bg-white rounded-large grid grid-cols-[1fr_auto] items-center px-4 py-3 shadow-drop border-border gap-4">
+            <div className="grid gap-6">
                 <h3 className={`text-sm font-regular truncate ${isCompleted ? 'line-through text-muted' : 'text-foreground'}`}>
                     {title}
                 </h3>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                     <Image
                         src="/icon/common/clock.svg"
                         alt="Clock"
@@ -27,7 +26,7 @@ export function TaskCard({
                     <h4 className="text-xs text-primary-45">12:00 AM</h4>
                 </div>
             </div>
-            <div className="grid gap-7 justify-items-end">
+            <div className="grid gap-6 justify-items-end">
                 <TaskCheckbox
                     level={level}
                     checked={isCompleted}

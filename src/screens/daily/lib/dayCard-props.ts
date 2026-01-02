@@ -3,4 +3,5 @@ export interface DayCardProps {
     day: number;
     weekday: string;
     isActive?: boolean;
+    onClick?: () => void;
 }
