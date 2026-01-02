@@ -1,28 +1,27 @@
 import Image from "next/image";
-import { Button } from "@shared/ui";
+import {LinkButton} from "@shared/ui";
 
 interface MenuButtonProps {
     icon: string;
     alt: string;
     children: React.ReactNode;
-    onClick?: () => void;
+    href: string;
 }
 
-export function MenuButton({ icon, alt, children, onClick }: MenuButtonProps) {
+export function MenuButton({icon, alt, children, href}: MenuButtonProps) {
     return (
-        <Button
-            variant="secondary"
-            className="flex gap-2 lg:py-8 lg:text-base lg:px-12 lg:gap-3"
-            onClick={onClick}
+        <LinkButton
+            href={href}
+            className="flex gap-2 lg:py-4 lg:text-base lg:px-8 bg-secondary text-secondary-foreground items-center
+             text-sm font-semibold shadow-md hover:shadow-lg rounded-md px-6 py-3"
         >
             <Image
                 src={icon}
                 alt={alt}
                 width={24}
                 height={24}
-                className="w-6 h-6 lg:w-9 lg:h-9"
             />
             {children}
-        </Button>
+        </LinkButton>
     );
 }

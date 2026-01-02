@@ -3,11 +3,75 @@
 import {useState} from "react";
 import {useForm, Controller} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {cva, type VariantProps} from "class-variance-authority";
 import {CreateTaskForm, createTaskSchema} from "@features/tasks/lib";
 import {Button, Input, Badge, Label} from "@shared/ui";
 import {Check, X} from "lucide-react";
 
-export type TaskFormVariant = 'default' | 'primary';
+const taskFormVariants = cva(
+    "grid gap-4 p-4 rounded-lg",
+    {
+        variants: {
+            variant: {
+                default: "bg-white",
+                primary: "bg-primary-100 text-white",
+            },
+        },
+        defaultVariants: {
+            variant: "default",
+        },
+    }
+)
+
+const labelVariants = cva("", {
+    variants: {
+        variant: {
+            default: "",
+            primary: "text-white",
+        },
+    },
+    defaultVariants: {
+        variant: "default",
+    },
+})
+
+const inputVariants = cva("", {
+    variants: {
+        variant: {
+            default: "",
+            primary: "bg-white text-black",
+        },
+    },
+    defaultVariants: {
+        variant: "default",
+    },
+})
+
+const cancelButtonVariants = cva("h-6 w-6 p-0", {
+    variants: {
+        variant: {
+            default: "",
+            primary: "text-white hover:text-white hover:bg-white/10",
+        },
+    },
+    defaultVariants: {
+        variant: "default",
+    },
+})
+
+const submitButtonVariants = cva("flex justify-center", {
+    variants: {
+        variant: {
+            default: "",
+            primary: "bg-secondary text-secondary-foreground hover:shadow-largeDrop",
+        },
+    },
+    defaultVariants: {
+        variant: "default",
+    },
+})
+
+export type TaskFormVariant = VariantProps<typeof taskFormVariants>["variant"];
 
 export interface TaskFormProps {
     onSubmit: (data: CreateTaskForm) => void;
@@ -46,41 +110,37 @@ export function TaskForm({ onSubmit, onCancel, variant = 'default', showHeader =
         }
     };
 
-    const isPrimary = variant === 'primary';
-    const textColor = isPrimary ? 'text-white' : '';
-    const buttonVariant = isPrimary ? 'secondary' : 'default';
-
     return (
-        <form onSubmit={handleSubmit(handleFormSubmit)} className={`grid gap-4 p-4 rounded-lg ${isPrimary ? 'bg-primary-100 ' : 'bg-white'} ${className}`}>
+        <form onSubmit={handleSubmit(handleFormSubmit)} className={taskFormVariants({ variant, className })}>
             {showHeader && (
                 <div className="flex justify-between items-center mb-2">
-                    <h4 className={`text-base font-medium ${isPrimary ? 'text-white' : ''}`}>New Task</h4>
+                    <h4 className={`text-base font-medium ${labelVariants({ variant })}`}>New Task</h4>
                     {onCancel && (
                         <Button
                             type="button"
                             variant="ghost"
                             size="sm"
                             onClick={onCancel}
-                            className={`h-6 w-6 p-0 ${isPrimary ? 'text-white hover:text-white hover:bg-white/10' : ''}`}
+                            className={cancelButtonVariants({ variant })}
                         >
                             <X size={14} />
                         </Button>
                     )}
                 </div>
             )}
-            <div className="flex gap-3 flex-col">
-                <Label className={textColor}>Name</Label>
+            <div className="flex gap-3 pb-2 flex-col">
+                <Label className={labelVariants({ variant })}>Name</Label>
                 <Input
                     {...register("name")}
                     placeholder="Enter task name"
-                    className={isPrimary ? 'bg-white text-black ' : ''}
+                    className={inputVariants({ variant })}
                 />
                 {errors.name && (
                     <p className="text-sm text-destructive">{errors.name.message}</p>
                 )}
             </div>
             <div className="grid grid-cols-1 gap-2">
-                <Label className={textColor}>Priority</Label>
+                <Label className={labelVariants({ variant })}>Priority</Label>
                 <Controller
                     name="level"
                     control={control}
@@ -111,12 +171,12 @@ export function TaskForm({ onSubmit, onCancel, variant = 'default', showHeader =
                     )}
                 />
             </div>
-            <div className="flex justify-center gap-2">
+            <div className={`flex justify-center gap-2 ${variant === "default" ? "pt-12" : '' }`}>
                 <Button
                     type="submit"
                     size='lg'
-                    variant={buttonVariant}
-                    className="flex justify-center"
+                    variant={variant === 'primary' ? 'secondary' : 'default'}
+                    className={submitButtonVariants({ variant })}
                     disabled={isSubmitting}
                 >
                     <Check />
