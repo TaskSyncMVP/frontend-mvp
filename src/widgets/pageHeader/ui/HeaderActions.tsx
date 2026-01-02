@@ -28,7 +28,7 @@ export function HeaderActions({ onGoBack, onNotification, variant = 'mobile' }: 
                         alt="Go back"
                         width={iconSize}
                         height={iconSize}
-                        className="w-6 h-6"
+                        className="w-6 h-6 lg:w-8 lg:h-8"
                     />
                 </Button>
             )}
@@ -39,13 +39,17 @@ export function HeaderActions({ onGoBack, onNotification, variant = 'mobile' }: 
                         alt="Notifications"
                         width={iconSize}
                         height={iconSize}
-                        className="w-6 h-6"
+                        className="w-6 h-6 lg:w-8 lg:h-8"
                     />
                 </Button>
             )}
         </div>
     );
 }
+
+
+
+
 
 
 

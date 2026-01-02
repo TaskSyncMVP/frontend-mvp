@@ -5,6 +5,9 @@ export function BarBackground() {
             className="absolute inset-x-0 bottom-0 w-full h-full"
             preserveAspectRatio="none"
             xmlns="http://www.w3.org/2000/svg"
+            style={{
+                filter: 'drop-shadow(0px -2px 10px rgba(0, 0, 0, 0.1))'
+            }}
         >
             <path
                 d="M0 22C0 9.84974 9.84974 0 22 0H93.5H141C141 0 145.5 0 154 0C164.148 0 162 27 187.5 27C214.5 27
@@ -13,5 +16,5 @@ export function BarBackground() {
                 fill="var(--primary-30)"
             />
         </svg>
-    )
+    );
 }

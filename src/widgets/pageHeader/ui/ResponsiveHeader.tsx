@@ -34,7 +34,7 @@ export function ResponsiveHeader({ title, onGoBack, onNotification }: Responsive
                     />
                 </div>
 
-                <div className="fixed top-[8rem] left-[50px] z-20">
+                <div className="fixed top-[6rem] left-[50px] z-20">
                     <h1 className="text-xl font-semibold">{title}</h1>
                 </div>
 
