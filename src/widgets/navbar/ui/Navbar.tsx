@@ -9,8 +9,7 @@ export function Navbar({ onModalToggle }: NavbarProps = {}) {
 
     return (
         <>
-            <div
-                className="fixed inset-x-0 bottom-0 z-50 h-14 pb-[env(safe-area-inset-bottom)]">
+            <div className="fixed inset-x-0 bottom-0 z-50 h-14">
                 <BarBackground/>
 
                 <div className="relative h-full flex items-center justify-between px-8">
@@ -31,7 +30,7 @@ export function Navbar({ onModalToggle }: NavbarProps = {}) {
                     bg-primary-100 text-white
                     flex items-center justify-center
                     active:scale-95
-                    shadow-largeDrop shadow-extraLargeDrop
+                    shadow-largeDrop
                 "
                 >
                     <Plus size='24px'/>

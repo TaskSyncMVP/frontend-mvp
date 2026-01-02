@@ -1,6 +1,6 @@
-import {PageHeader} from "@/widgets";
-import {MenuButton} from "./MenuButton";
-import {useMenuNavigation} from "./useMenuNavigation";
+import { PageHeader } from "@/widgets";
+import { MenuButton } from "./MenuButton";
+import { useMenuNavigation } from "./useMenuNavigation";
 
 export function MenuPage() {
     const {
@@ -11,10 +11,10 @@ export function MenuPage() {
     } = useMenuNavigation();
 
     return (
-        <div className="h-screen flex flex-col overflow-hidden relative">
+        <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:min-h-[calc(100vh-6rem)]">
             <PageHeader title="Menu"/>
-            <div className="absolute inset-0 flex items-center justify-center">
-                <div className="grid grid-cols-2 gap-3 lg:gap-6">
+            <div className="flex-1 flex items-center justify-center">
+                <div className="grid grid-cols-2 gap-4">
                     <MenuButton
                         icon="/icon/actions/setting-2.svg"
                         alt="Settings"

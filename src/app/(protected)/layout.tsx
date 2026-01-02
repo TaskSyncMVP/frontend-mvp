@@ -6,9 +6,11 @@ export default function SiteLayout({
   children: React.ReactNode;
 }>) {
   return (
-     <div className="mt-6 lg:mt-32 lg:px-[50px] lg:pt-[50px]">
-         {children}
+     <div className="">
          <ResponsiveNavbar/>
+         <main className="pt-10 lg:pt-24 lg:px-[50px]">
+             {children}
+         </main>
      </div>
   );
 }
