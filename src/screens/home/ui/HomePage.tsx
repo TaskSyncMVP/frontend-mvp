@@ -24,11 +24,11 @@ export function HomePage() {
             <div
                 className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-4 xl:gap-6 2xl:gap-8 lg:mt-12">
                 <div className="lg:self-start lg:justify-self-start">
-                    <h2 className="font-semibold text-base pb-2">Statistics</h2>
+                    <h2 className="font-semibold text-base lg:text-xl pb-2">Statistics</h2>
                     <Statistics data={statisticsData}/>
                 </div>
                 <div className="lg:col-start-2 lg:col-end-3 lg:self-center lg:justify-self-center">
-                    <h1 className="text-base font-semibold mb-4">Today’s Tasks</h1>
+                    <h1 className="text-base lg:text-xl font-semibold mb-4">Today’s Tasks</h1>
                     <TaskList className="md:columns-2"/>
                 </div>
             </div>

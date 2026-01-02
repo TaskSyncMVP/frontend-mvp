@@ -110,20 +110,27 @@ module.exports = {
   		}
   	}
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    function({ addUtilities }) {
-      addUtilities({
-        '.mask1': {
-          '-webkit-mask-image': 'url(/buttonForm.svg)',
-          'mask-image': 'url(/buttonForm.svg)',
-          'mask-repeat': 'no-repeat',
-          'mask-size': 'contain',
-          '-webkit-mask-size': 'contain',
-          'mask-position': 'center',
-          '-webkit-mask-position': 'center'
+    plugins: [
+        require("tailwindcss-animate"),
+        function({ addUtilities }) {
+            addUtilities({
+                '.mask1': {
+                    '-webkit-mask-image': 'url(/buttonForm.svg)',
+                    'mask-image': 'url(/buttonForm.svg)',
+                    'mask-repeat': 'no-repeat',
+                    'mask-size': 'contain',
+                    '-webkit-mask-size': 'contain',
+                    'mask-position': 'center',
+                    '-webkit-mask-position': 'center'
+                },
+                '.scrollbar-hide': {
+                    '-ms-overflow-style': 'none',
+                    'scrollbar-width': 'none',
+                    '&::-webkit-scrollbar': {
+                        display: 'none'
+                    }
+                }
+            })
         }
-      })
-    }
-  ],
+    ],
 }

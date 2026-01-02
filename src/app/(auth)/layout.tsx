@@ -8,7 +8,7 @@ export default function AuthLayout({
 }>) {
     return (
         <div className="relative min-h-screen flex flex-col justify-center items-center">
-            <div className="w-full max-w-[331px] relative">
+            <div className="w-full max-w-md relative lg:mt-32">
                 <div className="absolute left-[35%] top-[18.5%]">
                     <Image
                         src="/female-with-notebook.svg"
@@ -73,7 +73,7 @@ export default function AuthLayout({
                 </div>
 
                 {/* Контент формы */}
-                <div className="relative z-10 flex flex-col justify-center mt-[32rem] mb-4">
+                <div className="relative z-10 flex flex-col justify-center  mt-[32rem] mb-4">
                     {children}
                 </div>
             </div>

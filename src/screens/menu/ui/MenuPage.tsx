@@ -1,14 +1,7 @@
 import { PageHeader } from "@/widgets";
 import { MenuButton } from "./MenuButton";
-import { useMenuNavigation } from "./useMenuNavigation";
 
 export function MenuPage() {
-    const {
-        navigateToSettings,
-        navigateToTasks,
-        navigateToPomodoro,
-        navigateToTimeBlocking,
-    } = useMenuNavigation();
 
     return (
         <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:min-h-[calc(100vh-6rem)]">
@@ -18,27 +11,28 @@ export function MenuPage() {
                     <MenuButton
                         icon="/icon/actions/setting-2.svg"
                         alt="Settings"
-                        onClick={navigateToSettings}>
+                        href="/settings"
+                    >
                         Settings
                     </MenuButton>
                     <MenuButton
                         icon="/icon/actions/calendar.svg"
                         alt="Tasks"
-                        onClick={navigateToTasks}
+                        href="/tasks"
                     >
                         Tasks
                     </MenuButton>
                     <MenuButton
                         icon="/icon/actions/timer-start.svg"
                         alt="Pomodoro"
-                        onClick={navigateToPomodoro}
+                        href="/pomodoro"
                     >
                         Pomodoro
                     </MenuButton>
                     <MenuButton
                         icon="/icon/actions/save-add.svg"
                         alt="Time Blocking"
-                        onClick={navigateToTimeBlocking}
+                        href="/time-blocking"
                     >
                         Time Blocking
                     </MenuButton>

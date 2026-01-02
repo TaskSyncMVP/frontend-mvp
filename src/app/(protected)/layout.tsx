@@ -8,7 +8,7 @@ export default function SiteLayout({
   return (
      <div className="">
          <ResponsiveNavbar/>
-         <main className="pt-10 lg:pt-24 lg:px-[50px]">
+         <main className="pt-8 lg:pt-24 lg:px-[50px]">
              {children}
          </main>
      </div>
