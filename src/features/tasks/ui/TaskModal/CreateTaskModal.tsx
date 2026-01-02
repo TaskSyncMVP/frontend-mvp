@@ -1,40 +1,24 @@
 'use client';
 
 import {useState} from "react";
-import {useForm, Controller} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
 import {
-    Button, Input, Badge, Label,
+    Button,
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger
+    DialogTrigger,
+    TaskForm
 } from "@shared/ui";
 
-import {Check, Plus} from "lucide-react";
-import {CreateTaskModalProps, CreateTaskForm, createTaskSchema} from "@features/tasks/lib";
+import {Plus} from "lucide-react";
+import {CreateTaskModalProps, CreateTaskForm} from "@features/tasks/lib";
 
-export function CreateTaskModal({isOpen, onClose, onSubmit}: CreateTaskModalProps = {}) {
+export function CreateTaskModal({isOpen, onClose, onSubmit, variant = 'primary'}: CreateTaskModalProps = {}) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const isControlled = isOpen !== undefined && onClose !== undefined;
 
-    const {
-        register,
-        handleSubmit,
-        control,
-        formState: {errors},
-        reset,
-    } = useForm<CreateTaskForm>({
-        resolver: zodResolver(createTaskSchema),
-        defaultValues: {
-            name: "",
-            level: "medium",
-        },
-    });
-
     const handleClose = () => {
-        reset();
         if (isControlled && onClose) {
             onClose();
         }
@@ -73,57 +57,11 @@ export function CreateTaskModal({isOpen, onClose, onSubmit}: CreateTaskModalProp
                 <DialogHeader>
                     <DialogTitle>New Task</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSubmit(handleFormSubmit)} className="grid gap-12 pt-4 pb-2">
-                    <div className="grid grid-cols-1 gap-4">
-                        <div className="flex gap-3 flex-col">
-                            <Label>Name</Label>
-                            <Input
-                                {...register("name")}
-                                placeholder="Enter task name"
-                            />
-                            {errors.name && (
-                                <p className="text-sm text-destructive">{errors.name.message}</p>
-                            )}
-                        </div>
-                        <div className="grid grid-cols-1 gap-2">
-                            <Label>Priority</Label>
-                            <Controller
-                                name="level"
-                                control={control}
-                                render={({field}) => (
-                                    <div className='inline-flex gap-3'>
-                                        <Badge
-                                            variant="high"
-                                            className={`cursor-pointer ${field.value === 'high' ? 'ring-2 ring-primary' : ''}`}
-                                            onClick={() => field.onChange('high')}
-                                        >
-                                            High
-                                        </Badge>
-                                        <Badge
-                                            variant="medium"
-                                            className={`cursor-pointer ${field.value === 'medium' ? 'ring-2 ring-primary' : ''}`}
-                                            onClick={() => field.onChange('medium')}
-                                        >
-                                            Medium
-                                        </Badge>
-                                        <Badge
-                                            variant="low"
-                                            className={`cursor-pointer ${field.value === 'low' ? 'ring-2 ring-primary' : ''}`}
-                                            onClick={() => field.onChange('low')}
-                                        >
-                                            Low
-                                        </Badge>
-                                    </div>
-                                )}
-                            />
-                        </div>
-                    </div>
-                    <div className="flex justify-center">
-                        <Button type="submit" size='lg' className="flex justify-center" disabled={isSubmitting}>
-                            <Check />
-                        </Button>
-                    </div>
-                </form>
+                <TaskForm
+                    onSubmit={handleFormSubmit}
+                    variant={variant}
+                    className="pt-4 pb-2"
+                />
             </DialogContent>
         </Dialog>
     );
