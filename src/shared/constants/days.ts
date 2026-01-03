@@ -1,4 +1,4 @@
-import {TaskLevel} from "@features/tasks/lib";
+import {TaskLevel} from "@shared/lib/types";
 
 export interface DayData {
     date: string;
@@ -16,6 +16,36 @@ export interface DayData {
 }
 
 export const DAYS_DATA: DayData[] = [
+    {
+        date: "2026-01-03",
+        dayName: "Saturday",
+        month: "Jan",
+        day: 3,
+        weekday: "Sat",
+        tasks: [
+            {
+                id: "today-1",
+                title: "Morning workout",
+                status: "pending",
+                level: "medium",
+                isCompleted: false
+            },
+            {
+                id: "today-2",
+                title: "Review daily goals",
+                status: "pending",
+                level: "low",
+                isCompleted: false
+            },
+            {
+                id: "today-3",
+                title: "Team meeting preparation",
+                status: "pending",
+                level: "high",
+                isCompleted: false
+            }
+        ]
+    },
     {
         date: "2025-01-01",
         dayName: "Wednesday",

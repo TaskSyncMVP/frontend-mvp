@@ -1,12 +1,16 @@
 import {TaskList} from '@features/tasks';
 import {Statistics} from '@features/dashboard';
 import {Avatar, AvatarFallback} from "@shared/ui";
+import {DAYS_DATA} from "@shared/constants";
 
 export function HomePage() {
+    // Get first day tasks from DAYS_DATA
+    const firstDayTasks = DAYS_DATA[0]?.tasks || [];
+
     const statisticsData = {
         totalTasks: 24,
         completedTasks: 18,
-        todayTasks: 5,
+        todayTasks: firstDayTasks.length,
         weekTasks: 12,
     };
 
@@ -27,9 +31,9 @@ export function HomePage() {
                     <h2 className="font-semibold text-base lg:text-xl pb-2">Statistics</h2>
                     <Statistics data={statisticsData}/>
                 </div>
-                <div className="lg:col-start-2 lg:col-end-3 lg:self-center lg:justify-self-center">
-                    <h1 className="text-base lg:text-xl font-semibold mb-4">Today’s Tasks</h1>
-                    <TaskList className="md:columns-2"/>
+                <div className="lg:max-w-sm lg:w-full lg:justify-self-center">
+                    <h1 className="text-base lg:text-xl font-semibold mb-4">Today's Tasks</h1>
+                    <TaskList tasks={firstDayTasks} className="md:columns-2"/>
                 </div>
             </div>
         </div>

@@ -1,7 +1,5 @@
 export interface DayCardProps {
-    month: string;
-    day: number;
-    weekday: string;
+    date: string;
     isActive?: boolean;
     onClick?: () => void;
 }

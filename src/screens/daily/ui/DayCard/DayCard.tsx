@@ -1,6 +1,11 @@
 import {DayCardProps} from "@/screens/daily/lib";
 
-export function DayCard({ month, day, weekday, isActive = false, onClick }: DayCardProps) {
+export function DayCard({ date, isActive = false, onClick }: DayCardProps) {
+    const dateObj = new Date(date);
+    const day = dateObj.getDate();
+    const month = dateObj.toLocaleDateString('en-US', { month: 'short' });
+    const weekday = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+
     return (
         <div
             className={`rounded-lg flex flex-col gap-1.5 py-2 text-center min-w-0 cursor-pointer transition-colors ${

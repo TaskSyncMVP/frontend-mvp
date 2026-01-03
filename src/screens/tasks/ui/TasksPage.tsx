@@ -1,8 +1,8 @@
 'use client'
 import {useState} from "react";
 import {PageHeader} from "@/widgets";
-import {TaskCard} from "@features/tasks";
-import {Button, TaskForm} from "@shared/ui";
+import {TaskCard, TaskForm} from "@features/tasks";
+import {Button} from "@shared/ui";
 import {DAYS_DATA} from "@shared/constants";
 
 
