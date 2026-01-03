@@ -14,7 +14,7 @@ export function PomodoroPage() {
                             cy="112"
                             r="95"
                             fill="none"
-                            stroke="rgba(244, 120, 184, 0.3)"
+                            stroke="rgba(255, 228, 242, 1)"
                             strokeWidth="12"
                         />
                     </svg>
