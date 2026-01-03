@@ -1,4 +1,5 @@
-export type TaskLevel = "low" | "medium" | "high";
+
+import {TaskLevel} from "@shared/lib/types";
 
 export interface TaskCardProps {
     id: string;

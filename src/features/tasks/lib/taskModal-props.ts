@@ -1,5 +1,5 @@
 import {CreateTaskForm} from "@features/tasks/lib/task-schemas";
-import {TaskFormVariant} from "@shared/ui/task-form";
+import {TaskFormVariant} from "@features/tasks/ui/TaskForm";
 
 export interface CreateTaskModalProps {
     isOpen?: boolean;

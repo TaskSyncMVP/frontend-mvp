@@ -7,9 +7,9 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
-    TaskForm
+    DialogTrigger
 } from "@shared/ui";
+import {TaskForm} from "../TaskForm";
 
 import {Plus} from "lucide-react";
 import {CreateTaskModalProps, CreateTaskForm} from "@features/tasks/lib";

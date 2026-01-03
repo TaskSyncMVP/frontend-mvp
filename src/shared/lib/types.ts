@@ -1,0 +1,1 @@
+export type TaskLevel = "low" | "medium" | "high";

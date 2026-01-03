@@ -5,8 +5,7 @@ import {Check} from "lucide-react"
 import * as React from "react"
 
 import {cn} from "@/lib/utils"
-
-type TaskLevel = "low" | "medium" | "high"
+import {TaskLevel} from "@shared/lib/types"
 
 export interface TaskCheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
     level?: TaskLevel

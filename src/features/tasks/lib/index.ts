@@ -1,4 +1,5 @@
-export type {TaskCardProps, TaskLevel} from './taskCard-props'
+export type {TaskCardProps} from './taskCard-props'
+export type {TaskLevel} from '@shared/lib/types'
 export {type CreateTaskForm, createTaskSchema} from './task-schemas'
 export type {TaskListProps} from './taskList-props'
 export type {CreateTaskModalProps} from './taskModal-props'

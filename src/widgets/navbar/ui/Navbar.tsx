@@ -1,43 +1,79 @@
-import { Plus } from "lucide-react";
-import { BarBackground } from "./BarBackground";
-import { NavItem } from "./NavItem";
-import { Button } from "@shared/ui";
-import { NavbarProps } from "../props/navbar-props";
+'use client'
 
-export function Navbar({ onModalToggle }: NavbarProps = {}) {
+import {Plus, X, Check, Play} from "lucide-react";
+import {usePathname, useRouter} from "next/navigation";
+import {BarBackground} from "./BarBackground";
+import {NavItem} from "./NavItem";
+import {Button} from "@shared/ui";
+import {NavbarProps} from "../props/navbar-props";
+
+export function Navbar({onModalToggle, onSubmit}: NavbarProps = {}) {
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const getButtonConfig = () => {
+        switch (pathname) {
+            case '/menu':
+                return {
+                    icon: <X size='24px'/>,
+                    onClick: () => router.back(),
+                };
+            case '/settings':
+                return {
+                    icon: <Check size='24px'/>,
+                    onClick: onSubmit || (() => alert('Settings saved!')),
+                };
+
+            case '/pomodoro':
+                return {
+                    icon: <Play size='24px'/>,
+                    onClick: () => router.back(),
+                }
+            default:
+                return {
+                    icon: <Plus size='24px'/>,
+                    onClick: onModalToggle,
+                    className: "bg-primary-100 text-white"
+                };
+        }
+    };
+
+    const buttonConfig = getButtonConfig();
+
     return (
         <>
-            <div className="fixed inset-x-0 bottom-0 z-50 h-16 pb-[env(safe-area-inset-bottom)] sm:h-14">
+            <div
+                className="fixed inset-x-0 bottom-0 z-50 h-14 pb-[env(safe-area-inset-bottom)]">
                 <BarBackground/>
 
-                <div className="relative h-full flex items-center justify-between px-4 sm:px-8">
+                <div className="relative h-full flex items-center justify-between px-8">
                     <div className="flex-1 flex justify-around max-w-[40%] sm:gap-6 md:gap-8">
-                        <NavItem iconType="home" href="/home" />
-                        <NavItem iconType="calendar" href="/time-blocking" />
+                        <NavItem iconType="home" href="/home"/>
+                        <NavItem iconType="calendar" href="/time-blocking"/>
                     </div>
-
-                    <Button
-                        size="icon"
-                        onClick={onModalToggle}
-                        className="absolute left-1/2 -translate-x-1/2 -top-6
-                        w-12 h-12 rounded-full
-                        bg-primary-100 text-white
-                        flex items-center justify-center
-                        active:scale-95
-                        shadow-extraLargeDrop
-                        sm:-top-11 sm:w-16 sm:h-16
-                        md:-top-16 md:w-20 md:h-20
-                        z-10"
-                    >
-                        <Plus className="w-6 h-6 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
-                    </Button>
-
                     <div className="flex-1 flex justify-around max-w-[40%]  sm:gap-6 md:gap-8">
-                        <NavItem iconType="document" href="/tasks" />
-                        <NavItem iconType="profile-2user" href="/menu" />
+                        <NavItem iconType="document" href="/tasks"/>
+                        <NavItem iconType="profile-2user" href="/menu"/>
                     </div>
                 </div>
+
+                {buttonConfig && (
+                    <Button
+                        size="icon"
+                        onClick={buttonConfig.onClick}
+                        className={`absolute left-1/2 -translate-x-1/2 -top-6 w-11 h-11 rounded-full
+                        ${buttonConfig.className}
+                        flex items-center justify-center
+                        active:scale-95
+                         shadow-extraLargeDrop
+                         sm:w-16 sm:h-16 sm:-top-12
+                         md:w-20 md:h-20 md:-top-16
+                    `}
+                    >
+                        {buttonConfig.icon}
+                    </Button>
+                )}
             </div>
         </>
-    );
+    )
 }
