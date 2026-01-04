@@ -4,19 +4,32 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button, LinkButton, Input} from "@shared/ui";
 import {loginFormSchema, LoginFormSchemas} from "../../lib/login-form-schemas";
+import {useAuth} from "../../lib/auth-context";
+import {useRouter} from "next/navigation";
 
 export function LoginForm() {
+    const { login, isLoading, error, clearError } = useAuth();
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
+        reset,
         formState: {errors},
     } = useForm<LoginFormSchemas>({
         resolver: zodResolver(loginFormSchema),
     });
 
-    const onSubmit = (data: LoginFormSchemas) => {
-        console.log("Login data:", data);
-        // TODO: Implement login logic
+    const onSubmit = async (data: LoginFormSchemas) => {
+        try {
+            clearError();
+            await login(data);
+            reset();
+            const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/home';
+            sessionStorage.removeItem('redirectAfterLogin');
+            router.push(redirectTo);
+        } catch (err) {
+        }
     };
 
     return (
@@ -29,6 +42,7 @@ export function LoginForm() {
                             {...register("email")}
                             placeholder='Email'
                             type="email"
+                            disabled={isLoading}
                         />
                         {errors.email && (
                             <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -39,14 +53,20 @@ export function LoginForm() {
                             {...register("password")}
                             placeholder="Password"
                             type="password"
+                            disabled={isLoading}
                         />
                         {errors.password && (
                             <p className="text-sm text-destructive">{errors.password.message}</p>
                         )}
                     </div>
-                    <Button className="w-full" size="xl" type="submit">Enter</Button>
+                    {error && (
+                        <p className="text-sm text-destructive text-center">{error}</p>
+                    )}
+                    <Button className="w-full" size="xl" type="submit" disabled={isLoading}>
+                        {isLoading ? 'Logging in...' : 'Enter'}
+                    </Button>
                 </form>
-                <LinkButton href="/registration">Registration</LinkButton>
+                <LinkButton href="/register">Registration</LinkButton>
             </div>
         </div>
     );
