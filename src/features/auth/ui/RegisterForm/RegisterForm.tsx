@@ -4,19 +4,32 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button, LinkButton, Input} from "@shared/ui";
 import {registerFormSchema, RegisterFormSchemas} from "../../lib/register-form-schemas";
+import {useAuth} from "../../lib/auth-context";
+import {useRouter} from "next/navigation";
 
 export function RegisterForm() {
+    const { register: registerUser, isLoading, error, clearError } = useAuth();
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
+        reset,
         formState: {errors},
     } = useForm<RegisterFormSchemas>({
         resolver: zodResolver(registerFormSchema),
     });
 
-    const onSubmit = (data: RegisterFormSchemas) => {
-        console.log("Registration data:", data);
-        // TODO: Implement registration logic
+    const onSubmit = async (data: RegisterFormSchemas) => {
+        try {
+            clearError();
+            await registerUser(data);
+            reset();
+            const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/home';
+            sessionStorage.removeItem('redirectAfterLogin');
+            router.push(redirectTo);
+        } catch (err) {
+        }
     };
 
     return (
@@ -29,6 +42,7 @@ export function RegisterForm() {
                             {...register("email")}
                             placeholder='Email'
                             type="email"
+                            disabled={isLoading}
                         />
                         {errors.email && (
                             <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -39,12 +53,15 @@ export function RegisterForm() {
                             {...register("password")}
                             placeholder="Password"
                             type="password"
+                            disabled={isLoading}
                         />
                         {errors.password && (
                             <p className="text-sm text-destructive">{errors.password.message}</p>
                         )}
                     </div>
-                    <Button className="w-full" size="xl" type="submit">Enter</Button>
+                    <Button className="w-full" size="xl" type="submit" disabled={isLoading}>
+                        {isLoading ? 'Registering...' : 'Enter'}
+                    </Button>
                 </form>
                 <LinkButton href="/login">Login</LinkButton>
             </div>
