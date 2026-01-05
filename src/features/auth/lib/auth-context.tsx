@@ -95,6 +95,7 @@ export function AuthProvider({children}: AuthProviderProps) {
 
         try {
             const response = await authApi.login(credentials);
+            cookies.set('accessToken', response.accessToken);
             setState({
                 user: response.user,
                 isLoading: false,
@@ -117,6 +118,7 @@ export function AuthProvider({children}: AuthProviderProps) {
 
         try {
             const response = await authApi.register(data);
+            cookies.set('accessToken', response.accessToken);
             setState({
                 user: response.user,
                 isLoading: false,
