@@ -1,1 +1,2 @@
-export {LoginForm, RegisterForm} from './ui'
+export {LoginForm, RegisterForm, AuthGuard} from './ui';
+export {AuthProvider, useAuth} from './lib/auth-context';

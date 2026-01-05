@@ -4,19 +4,35 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button, LinkButton, Input} from "@shared/ui";
 import {registerFormSchema, RegisterFormSchemas} from "../../lib/register-form-schemas";
+import {useAuth} from "../../lib/auth-context";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
 
 export function RegisterForm() {
+    const { register: registerUser, isLoading, error, clearError } = useAuth();
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
+        reset,
         formState: {errors},
     } = useForm<RegisterFormSchemas>({
         resolver: zodResolver(registerFormSchema),
     });
 
-    const onSubmit = (data: RegisterFormSchemas) => {
-        console.log("Registration data:", data);
-        // TODO: Implement registration logic
+    const onSubmit = async (data: RegisterFormSchemas) => {
+        try {
+            clearError();
+            await registerUser(data);
+            reset();
+            toast.success('Account created successfully!');
+            const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/home';
+            sessionStorage.removeItem('redirectAfterLogin');
+            router.push(redirectTo);
+        } catch (err) {
+            console.error('Registration failed:', err);
+        }
     };
 
     return (
@@ -29,6 +45,7 @@ export function RegisterForm() {
                             {...register("email")}
                             placeholder='Email'
                             type="email"
+                            disabled={isLoading}
                         />
                         {errors.email && (
                             <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -37,14 +54,20 @@ export function RegisterForm() {
                     <div className="flex gap-3 flex-col">
                         <Input
                             {...register("password")}
-                            placeholder="Password"
+                            placeholder="Password (min 6 characters)"
                             type="password"
+                            disabled={isLoading}
                         />
                         {errors.password && (
                             <p className="text-sm text-destructive">{errors.password.message}</p>
                         )}
                     </div>
-                    <Button className="w-full" size="xl" type="submit">Enter</Button>
+                    {error && (
+                        <p className="text-sm text-destructive text-center">{error}</p>
+                    )}
+                    <Button className="w-full" size="xl" type="submit" disabled={isLoading}>
+                        {isLoading ? 'Registering...' : 'Enter'}
+                    </Button>
                 </form>
                 <LinkButton href="/login">Login</LinkButton>
             </div>
