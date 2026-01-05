@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import "./styles/globals.css";
 import {Lexend_Deca, Nunito} from "next/font/google";
 import {Providers} from "./providers";
+import {Toaster} from "@/shared/ui";
 
 const lexendDeca = Lexend_Deca({
     variable: '--font-lexend-deca-sans',
@@ -36,6 +37,7 @@ export default function RootLayout({
                          bg-blue-500 opacity-25 rounded-full blur-3xl"/>
                     </div>
                     {children}
+                    <Toaster/>
                 </div>
             </Providers>
         </body>

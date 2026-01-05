@@ -2,6 +2,7 @@
 
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {AuthProvider} from "@/features/auth";
+import {Toaster} from "@/shared/ui";
 import {useMemo} from "react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -19,6 +20,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <AuthProvider>
                 {children}
             </AuthProvider>
+            <Toaster />
         </QueryClientProvider>
     );
 }

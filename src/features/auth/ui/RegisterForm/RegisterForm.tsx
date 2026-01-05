@@ -6,6 +6,7 @@ import {Button, LinkButton, Input} from "@shared/ui";
 import {registerFormSchema, RegisterFormSchemas} from "../../lib/register-form-schemas";
 import {useAuth} from "../../lib/auth-context";
 import {useRouter} from "next/navigation";
+import {toast} from "sonner";
 
 export function RegisterForm() {
     const { register: registerUser, isLoading, error, clearError } = useAuth();
@@ -25,10 +26,12 @@ export function RegisterForm() {
             clearError();
             await registerUser(data);
             reset();
+            toast.success('Account created successfully!');
             const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/home';
             sessionStorage.removeItem('redirectAfterLogin');
             router.push(redirectTo);
         } catch (err) {
+            console.error('Registration failed:', err);
         }
     };
 
@@ -51,7 +54,7 @@ export function RegisterForm() {
                     <div className="flex gap-3 flex-col">
                         <Input
                             {...register("password")}
-                            placeholder="Password"
+                            placeholder="Password (min 6 characters)"
                             type="password"
                             disabled={isLoading}
                         />
@@ -59,6 +62,9 @@ export function RegisterForm() {
                             <p className="text-sm text-destructive">{errors.password.message}</p>
                         )}
                     </div>
+                    {error && (
+                        <p className="text-sm text-destructive text-center">{error}</p>
+                    )}
                     <Button className="w-full" size="xl" type="submit" disabled={isLoading}>
                         {isLoading ? 'Registering...' : 'Enter'}
                     </Button>
