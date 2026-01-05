@@ -5,6 +5,33 @@ import {authApi, LoginCredentials, RegisterData} from '@shared/api/auth';
 import {User} from '@shared/api/client';
 import { cookies } from '@shared/lib/cookies';
 
+const getErrorMessage = (error: any, type: 'login' | 'register'): string => {
+    const status = error.response?.status;
+    const message = error.response?.data?.message?.toLowerCase() || '';
+
+    if (type === 'login') {
+        if (status === 401) {
+            if (message.includes('user not found') || message.includes('email not found')) {
+                return 'User not found';
+            }
+            if (message.includes('password') || message.includes('invalid password')) {
+                return 'Wrong login or password';
+            }
+            return 'Invalid email or password';
+        }
+        return 'Please check the data you entered';
+    }
+
+    if (type === 'register') {
+        if (status === 400 && (message.includes('already') || message.includes('exists'))) {
+            return 'This email is already registered. Try logging in instead';
+        }
+        return 'Registration failed. Please try again';
+    }
+
+    return 'An error occurred';
+};
+
 interface AuthState {
     user: User | null;
     isLoading: boolean;
@@ -75,9 +102,7 @@ export function AuthProvider({children}: AuthProviderProps) {
                 error: null,
             });
         } catch (error: any) {
-            // Sanitize error message to prevent XSS
-            const rawMessage = error.response?.data?.message || 'Login failed';
-            const errorMessage = typeof rawMessage === 'string' ? rawMessage.replace(/[<>]/g, '') : 'Login failed';
+            const errorMessage = getErrorMessage(error, 'login');
             setState(prev => ({
                 ...prev,
                 isLoading: false,
@@ -99,9 +124,7 @@ export function AuthProvider({children}: AuthProviderProps) {
                 error: null,
             });
         } catch (error: any) {
-            // Sanitize error message to prevent XSS
-            const rawMessage = error.response?.data?.message || 'Registration failed';
-            const errorMessage = typeof rawMessage === 'string' ? rawMessage.replace(/[<>]/g, '') : 'Registration failed';
+            const errorMessage = getErrorMessage(error, 'register');
             setState(prev => ({
                 ...prev,
                 isLoading: false,
