@@ -6,6 +6,7 @@ import {Button, LinkButton, Input} from "@shared/ui";
 import {loginFormSchema, LoginFormSchemas} from "../../lib/login-form-schemas";
 import {useAuth} from "../../lib/auth-context";
 import {useRouter} from "next/navigation";
+import {toast} from "sonner";
 
 export function LoginForm() {
     const { login, isLoading, error, clearError } = useAuth();
@@ -29,6 +30,7 @@ export function LoginForm() {
             sessionStorage.removeItem('redirectAfterLogin');
             router.push(redirectTo);
         } catch (err) {
+            console.error('Login failed:', err);
         }
     };
 
@@ -66,7 +68,7 @@ export function LoginForm() {
                         {isLoading ? 'Logging in...' : 'Enter'}
                     </Button>
                 </form>
-                <LinkButton href="/register">Registration</LinkButton>
+                <LinkButton href="/registration">Registration</LinkButton>
             </div>
         </div>
     );
