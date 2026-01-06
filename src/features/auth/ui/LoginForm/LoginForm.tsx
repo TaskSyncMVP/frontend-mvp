@@ -26,11 +26,12 @@ export function LoginForm() {
             clearError();
             await login(data);
             reset();
+            toast.success('Successfully logged in!');
             const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/home';
             sessionStorage.removeItem('redirectAfterLogin');
             router.push(redirectTo);
         } catch (err) {
-            console.error('Login failed:', err);
+            console.error('Login failed:');
         }
     };
 
