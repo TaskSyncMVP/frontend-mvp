@@ -1,21 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '@/features/auth';
-import { profileApi } from '@/entities/user';
-import { UpdateProfileData, UpdatePomodoroData } from './types';
+import { useUpdateProfile as useUpdateProfileFromEntity } from '@/entities/user/hooks';
+import { UpdatePomodoroData } from './types';
 import { pomodoroApi } from './api';
 
-export const useUpdateProfile = () => {
-    const { refreshUser } = useAuth();
-    const queryClient = useQueryClient();
-
-    return useMutation({
-        mutationFn: (data: UpdateProfileData) => profileApi.updateProfile(data),
-        onSuccess: () => {
-            refreshUser();
-            queryClient.invalidateQueries({ queryKey: ['user-profile'] });
-        },
-    });
-};
+export const useUpdateProfile = useUpdateProfileFromEntity;
 
 export const useUpdatePomodoroSettings = () => {
     const queryClient = useQueryClient();
@@ -25,17 +13,6 @@ export const useUpdatePomodoroSettings = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['pomodoro-settings'] });
         },
-    });
-};
-
-export const useUserProfile = () => {
-    const { user } = useAuth();
-
-    return useQuery({
-        queryKey: ['user-profile'],
-        queryFn: () => profileApi.getProfile(),
-        enabled: !!user,
-        initialData: user ? { user } : undefined,
     });
 };
 
@@ -50,19 +27,14 @@ export const usePomodoroSettings = () => {
 export const useSettings = () => {
     const updateProfile = useUpdateProfile();
     const updatePomodoro = useUpdatePomodoroSettings();
-    const userProfile = useUserProfile();
     const pomodoroSettings = usePomodoroSettings();
 
     return {
-        profile: userProfile.data?.user,
-        isProfileLoading: userProfile.isLoading,
         updateProfile,
-
         pomodoro: pomodoroSettings.data?.settings,
         isPomodoroLoading: pomodoroSettings.isLoading,
         updatePomodoro,
-
-        isLoading: userProfile.isLoading || pomodoroSettings.isLoading,
-        error: userProfile.error || pomodoroSettings.error,
+        isLoading: pomodoroSettings.isLoading,
+        error: pomodoroSettings.error,
     };
 };
