@@ -198,6 +198,9 @@ export function AuthProvider({children}: AuthProviderProps) {
 export function useAuth() {
     const context = useContext(AuthContext);
     if (context === undefined) {
+        if (typeof window === 'undefined') {
+            throw new Error('useAuth called on server side. Make sure AuthProvider is properly set up.');
+        }
         throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;

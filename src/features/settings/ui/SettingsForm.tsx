@@ -68,11 +68,11 @@ export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSu
 
         if (Object.keys(updateData).length > 0) {
             toast.loading('Saving profile...', { id: 'profile-update' });
-            
+
             updateProfileMutation.mutate(updateData, {
                 onSuccess: () => {
                     toast.success('Profile updated successfully!', { id: 'profile-update' });
-                    
+
                     setValue('password', '');
                     reset({ name: data.name, password: '' });
 
@@ -108,6 +108,19 @@ export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSu
         };
     }, [handleSubmit, onSubmit]);
 
+    if (isLoading || !user) {
+        return (
+            <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                    <div className="h-10 bg-gray-200 rounded animate-pulse" />
+                    <div className="h-10 bg-gray-200 rounded animate-pulse" />
+                    <div className="h-10 bg-gray-200 rounded animate-pulse" />
+                    <div className="h-10 bg-gray-200 rounded animate-pulse" />
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-4">
             <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -136,6 +149,7 @@ export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSu
                         type="password"
                         showPasswordToggle
                         disabled={updateProfileMutation.isPending}
+                        ref={passwordInputRef}
                     />
                     {errors.password && (
                         <p className="text-sm text-destructive mt-1">{errors.password.message}</p>
