@@ -1,11 +1,20 @@
 'use client';
 
 import React, {createContext, useContext, useEffect, useState, ReactNode} from 'react';
-import {authApi, LoginCredentials, RegisterData} from '@shared/api/auth';
-import {User} from '@shared/api/client';
+import {authApi, User, LoginCredentials, RegisterData} from '@/entities/user';
 import { cookies } from '@shared/lib/cookies';
 
-const getErrorMessage = (error: any, type: 'login' | 'register'): string => {
+interface ApiError {
+    response?: {
+        status?: number;
+        data?: {
+            message?: string;
+        };
+    };
+    message?: string;
+}
+
+const getErrorMessage = (error: ApiError, type: 'login' | 'register'): string => {
     const status = error.response?.status;
     const message = error.response?.data?.message?.toLowerCase() || '';
 
@@ -44,6 +53,7 @@ interface AuthContextType extends AuthState {
     register: (data: RegisterData) => Promise<void>;
     logout: () => Promise<void>;
     clearError: () => void;
+    refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -76,7 +86,7 @@ export function AuthProvider({children}: AuthProviderProps) {
                     isAuthenticated: true,
                     error: null,
                 });
-            } catch (error) {
+            } catch {
                 cookies.remove('accessToken');
                 setState({
                     user: null,
@@ -102,14 +112,14 @@ export function AuthProvider({children}: AuthProviderProps) {
                 isAuthenticated: true,
                 error: null,
             });
-        } catch (error: any) {
-            const errorMessage = getErrorMessage(error, 'login');
+        } catch {
+            const errorMessage = getErrorMessage(new Error('Login failed') as ApiError, 'login');
             setState(prev => ({
                 ...prev,
                 isLoading: false,
                 error: errorMessage,
             }));
-            throw error;
+            throw new Error('Login failed');
         }
     };
 
@@ -125,8 +135,8 @@ export function AuthProvider({children}: AuthProviderProps) {
                 isAuthenticated: true,
                 error: null,
             });
-        } catch (error: any) {
-            const errorMessage = getErrorMessage(error, 'register');
+        } catch (error) {
+            const errorMessage = getErrorMessage(error as ApiError, 'register');
             setState(prev => ({
                 ...prev,
                 isLoading: false,
@@ -151,6 +161,24 @@ export function AuthProvider({children}: AuthProviderProps) {
         }
     };
 
+    const refreshUser = async () => {
+        try {
+            const user = await authApi.getCurrentUser();
+            setState(prev => ({
+                ...prev,
+                user,
+            }));
+        } catch {
+            cookies.remove('accessToken');
+            setState({
+                user: null,
+                isLoading: false,
+                isAuthenticated: false,
+                error: null,
+            });
+        }
+    };
+
     const clearError = () => {
         setState(prev => ({...prev, error: null}));
     };
@@ -161,6 +189,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         register,
         logout,
         clearError,
+        refreshUser,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

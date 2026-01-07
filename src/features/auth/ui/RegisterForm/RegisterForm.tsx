@@ -7,6 +7,7 @@ import {registerFormSchema, RegisterFormSchemas} from "../../lib/register-form-s
 import {useAuth} from "../../lib/auth-context";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
+import {safeStorage} from "@shared/lib/storage";
 
 export function RegisterForm() {
     const { register: registerUser, isLoading, error, clearError } = useAuth();
@@ -27,11 +28,10 @@ export function RegisterForm() {
             await registerUser(data);
             reset();
             toast.success('Account created successfully!');
-            const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/home';
-            sessionStorage.removeItem('redirectAfterLogin');
+            const redirectTo = safeStorage.getItem('redirectAfterLogin') || '/home';
+            safeStorage.removeItem('redirectAfterLogin');
             router.push(redirectTo);
-        } catch (err) {
-            console.error('Registration failed:', err);
+        } catch {
         }
     };
 
@@ -56,6 +56,7 @@ export function RegisterForm() {
                             {...register("password")}
                             placeholder="Password (min 6 characters)"
                             type="password"
+                            showPasswordToggle
                             disabled={isLoading}
                         />
                         {errors.password && (
