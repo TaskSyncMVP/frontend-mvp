@@ -17,8 +17,7 @@ export function TasksPage() {
         setShowFormForDay(null);
     };
 
-    const handleCreateTask = (data: any) => {
-        console.log(`Creating task for ${showFormForDay}:`, data);
+    const handleCreateTask = () => {
         setShowFormForDay(null);
     };
 
