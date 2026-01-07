@@ -2,23 +2,8 @@
 
 import { PageHeader } from "@/widgets";
 import { MenuButton } from "./MenuButton";
-import { Button } from "@shared/ui";
-import { useAuth } from "@features/auth";
-import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
 
 export function MenuPage() {
-    const { logout, isLoading, user } = useAuth();
-    const router = useRouter();
-
-    const handleLogout = async () => {
-        try {
-            await logout();
-            router.push('/login');
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
-    };
 
     return (
         <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:min-h-[calc(100vh-6rem)]">
@@ -54,23 +39,6 @@ export function MenuPage() {
                         Time Blocking
                     </MenuButton>
                 </div>
-            </div>
-            <div className="mt-8 px-4">
-                {user && (
-                    <div className="text-center mb-4">
-                        <p className="text-sm text-muted-foreground">Logged in as</p>
-                        <p className="font-medium">{user.email}</p>
-                    </div>
-                )}
-                <Button
-                    onClick={handleLogout}
-                    disabled={isLoading}
-                    variant="outline"
-                    className="w-full"
-                >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    {isLoading ? 'Logging out...' : 'Logout'}
-                </Button>
             </div>
         </div>
     );
