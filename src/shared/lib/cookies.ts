@@ -8,15 +8,23 @@ export interface CookieOptions {
     sameSite?: 'strict' | 'lax' | 'none';
 }
 
+const isSecureContext = (): boolean => {
+    if (typeof window === 'undefined') return true;
+    return window.location.protocol === 'https:' || window.location.hostname === 'localhost';
+};
+
 export const cookies = {
     set: (name: string, value: string, options: CookieOptions = {}) => {
+        if (typeof document === 'undefined') {
+            return; // SSR safety
+        }
+
         const {
             maxAge,
             expires,
             path = '/',
             domain,
-            secure,
-            httpOnly,
+            secure = isSecureContext(),
             sameSite = 'lax'
         } = options;
 
@@ -38,14 +46,17 @@ export const cookies = {
             cookieString += `; secure`;
         }
 
-        if (httpOnly) {
-            cookieString += `; httpOnly`;
-        }
+        // Note: httpOnly cannot be set from client-side JavaScript
+        // It should be set by the server when setting auth tokens
 
         document.cookie = cookieString;
     },
 
     get: (name: string): string | null => {
+        if (typeof document === 'undefined') {
+            return null; // SSR safety
+        }
+
         if (!name || typeof name !== 'string' || !/^[a-zA-Z0-9_-]+$/.test(name)) {
             return null;
         }
@@ -64,6 +75,10 @@ export const cookies = {
     },
 
     remove: (name: string, options: CookieOptions = {}) => {
+        if (typeof document === 'undefined') {
+            return; // SSR safety
+        }
+
         const { path = '/', domain } = options;
         let cookieString = `${name}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 
@@ -74,7 +89,11 @@ export const cookies = {
         document.cookie = cookieString;
     },
 
-    getAll: () => {
+    getAll: (): Record<string, string> => {
+        if (typeof document === 'undefined') {
+            return {}; // SSR safety
+        }
+
         const cookies: Record<string, string> = {};
         const ca = document.cookie.split(';');
 

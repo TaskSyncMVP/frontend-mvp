@@ -1,6 +1,5 @@
 'use client';
 
-import {useState} from "react";
 import {
     Button,
     Dialog,
@@ -15,7 +14,6 @@ import {Plus} from "lucide-react";
 import {CreateTaskModalProps, CreateTaskForm} from "@features/tasks/lib";
 
 export function CreateTaskModal({isOpen, onClose, onSubmit, variant = 'primary'}: CreateTaskModalProps = {}) {
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const isControlled = isOpen !== undefined && onClose !== undefined;
 
     const handleClose = () => {
@@ -27,14 +25,11 @@ export function CreateTaskModal({isOpen, onClose, onSubmit, variant = 'primary'}
     const handleFormSubmit = async (data: CreateTaskForm) => {
         if (!onSubmit) return;
 
-        setIsSubmitting(true);
         try {
             await onSubmit(data);
             handleClose();
         } catch (error) {
             console.error("Failed to create task:", error);
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
