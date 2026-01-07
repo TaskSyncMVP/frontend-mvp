@@ -6,7 +6,7 @@ import {Button, LinkButton, Input} from "@shared/ui";
 import {loginFormSchema, LoginFormSchemas} from "../../lib/login-form-schemas";
 import {useAuth} from "../../lib/auth-context";
 import {useRouter} from "next/navigation";
-import {toast} from "sonner";
+import {safeStorage} from "@shared/lib/storage";
 
 export function LoginForm() {
     const { login, isLoading, error, clearError } = useAuth();
@@ -26,12 +26,11 @@ export function LoginForm() {
             clearError();
             await login(data);
             reset();
-            toast.success('Successfully logged in!');
-            const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/home';
-            sessionStorage.removeItem('redirectAfterLogin');
+            const redirectTo = safeStorage.getItem('redirectAfterLogin') || '/home';
+            safeStorage.removeItem('redirectAfterLogin');
             router.push(redirectTo);
-        } catch (err) {
-            console.error('Login failed:');
+        } catch {
+            // Error is handled by auth context
         }
     };
 
@@ -56,6 +55,7 @@ export function LoginForm() {
                             {...register("password")}
                             placeholder="Password"
                             type="password"
+                            showPasswordToggle
                             disabled={isLoading}
                         />
                         {errors.password && (
