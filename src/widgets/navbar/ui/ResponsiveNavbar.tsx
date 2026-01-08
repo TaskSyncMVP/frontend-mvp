@@ -20,6 +20,7 @@ export function ResponsiveNavbar() {
                 <Navbar
                     onModalToggle={() => setIsModalOpen(prev => !prev)}
                     onSubmit={pathname === '/settings' ? handleSettingsSubmit : undefined}
+                    isModalOpen={isModalOpen}
                 />
                 <CreateTaskModal
                     isOpen={isModalOpen}

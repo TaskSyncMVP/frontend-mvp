@@ -1,25 +1,27 @@
 'use client';
 
-import {TaskList} from '@features/tasks';
+import {TaskCard, DeleteAllTasksButton} from '@features/tasks';
 import {Statistics} from '@features/dashboard';
 import {Avatar, AvatarFallback} from "@shared/ui";
 import {useAuth} from "@features/auth";
-import {DAYS_DATA} from "@shared/constants";
+import {useTasks} from "@/entities/task";
+import {getTodayTasks, getWeekTasks} from "@shared/lib/date-utils";
 
 export function HomePage() {
     const { user } = useAuth();
+    const { data: tasks = [], isLoading } = useTasks();
 
-    const firstDayTasks = DAYS_DATA[0]?.tasks || [];
+    const todayTasks = getTodayTasks(tasks);
 
-    const totalTasks = DAYS_DATA.reduce((total, day) => total + day.tasks.length, 0);
+    const completedTasks = tasks.filter(task => task.isCompleted).length;
+    const weekTasks = getWeekTasks(tasks).length;
 
     const statisticsData = {
-        totalTasks: totalTasks,
-        completedTasks: 18,
-        todayTasks: firstDayTasks.length,
-        weekTasks: 12,
+        totalTasks: tasks.length,
+        completedTasks,
+        todayTasks: todayTasks.length,
+        weekTasks,
     };
-
 
     const sanitizeText = (text?: string) => {
         if (!text) return '';
@@ -49,11 +51,33 @@ export function HomePage() {
                 className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-4 xl:gap-6 2xl:gap-8 lg:mt-12">
                 <div className="lg:self-start lg:justify-self-start">
                     <h2 className="font-semibold text-base lg:text-xl pb-2">Statistics</h2>
-                    <Statistics data={statisticsData} isLoading={false}/>
+                    <Statistics data={statisticsData} isLoading={isLoading}/>
                 </div>
                 <div className="lg:max-w-sm lg:w-full lg:justify-self-center">
-                    <h1 className="text-base lg:text-xl font-semibold mb-4">Today&apos;s Tasks</h1>
-                    <TaskList tasks={firstDayTasks} className="md:columns-2"/>
+                    <div className="flex items-center justify-between mb-4">
+                        <h1 className="text-base lg:text-xl font-semibold">Today&apos;s Tasks</h1>
+                        <DeleteAllTasksButton />
+                    </div>
+                    {isLoading ? (
+                        <div className="text-muted-foreground">Loading tasks...</div>
+                    ) : (
+                        <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-4 md:columns-2">
+                                {todayTasks.length > 0 ? (
+                                    todayTasks.map((task) => (
+                                        <TaskCard
+                                            key={task.id}
+                                            {...task}
+                                        />
+                                    ))
+                                ) : (
+                                    <div className="text-muted-foreground text-sm">
+                                        No tasks for today
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

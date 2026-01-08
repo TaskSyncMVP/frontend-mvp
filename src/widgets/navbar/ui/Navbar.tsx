@@ -7,7 +7,7 @@ import {NavItem} from "./NavItem";
 import {Button} from "@shared/ui";
 import {NavbarProps} from "../props/navbar-props";
 
-export function Navbar({onModalToggle, onSubmit}: NavbarProps = {}) {
+export function Navbar({onModalToggle, onSubmit, isModalOpen}: NavbarProps = {}) {
     const pathname = usePathname();
     const router = useRouter();
 
@@ -30,8 +30,9 @@ export function Navbar({onModalToggle, onSubmit}: NavbarProps = {}) {
                     onClick: () => router.back(),
                 }
             default:
+                // Если модальное окно открыто, показываем крестик, иначе плюс
                 return {
-                    icon: <Plus size='24px'/>,
+                    icon: isModalOpen ? <X size='24px'/> : <Plus size='24px'/>,
                     onClick: onModalToggle,
                     className: "bg-primary-100 text-white"
                 };
