@@ -6,11 +6,14 @@ import {TaskCard} from "@features/tasks";
 import {DayCard} from "./DayCard";
 import {useTasks} from "@/entities/task";
 import {generateDaysWithTasks} from "@shared/lib/date-utils";
+import {DailyPageSkeleton} from "./DailyPageSkeleton";
+import {useAuth} from "@features/auth";
 
 export function DailyPage() {
-    const [selectedDayIndex, setSelectedDayIndex] = useState(7); // Сегодняшний день в середине массива (индекс 7)
+    const [selectedDayIndex, setSelectedDayIndex] = useState(7);
     const [selectedFilter, setSelectedFilter] = useState<'all' | 'high' | 'medium' | 'low'>('all');
-    const { data: tasks = [], isLoading } = useTasks();
+    const { data: tasks = [], isLoading: tasksLoading } = useTasks();
+    const { isLoading: authLoading } = useAuth();
 
     const daysData = generateDaysWithTasks(tasks);
 
@@ -28,13 +31,11 @@ export function DailyPage() {
         ? selectedDayTasks
         : selectedDayTasks.filter(task => task.level === selectedFilter);
 
-    if (isLoading) {
+    if (authLoading || tasksLoading) {
         return (
             <>
                 <PageHeader title="Today's Tasks"/>
-                <div className="flex justify-center items-center h-64">
-                    <div className="text-muted-foreground">Loading tasks...</div>
-                </div>
+                <DailyPageSkeleton />
             </>
         );
     }

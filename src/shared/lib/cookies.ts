@@ -45,10 +45,6 @@ export const cookies = {
         if (secure) {
             cookieString += `; secure`;
         }
-
-        // Note: httpOnly cannot be set from client-side JavaScript
-        // It should be set by the server when setting auth tokens
-
         document.cookie = cookieString;
     },
 

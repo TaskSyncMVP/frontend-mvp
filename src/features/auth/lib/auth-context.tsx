@@ -78,6 +78,8 @@ export function AuthProvider({children}: AuthProviderProps) {
                 return;
             }
 
+            setState(prev => ({...prev, isAuthenticated: true, isLoading: false}));
+
             try {
                 const user = await authApi.getCurrentUser();
                 setState({
