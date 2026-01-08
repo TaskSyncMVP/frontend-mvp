@@ -14,7 +14,7 @@ interface SettingsFormProps {
     onSubmitSuccess?: () => void;
 }
 
-export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSubmitSuccess }) {
+export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({onSubmitSuccess}) {
     const {user, logout, isLoading} = useAuth();
     const updateProfileMutation = useUpdateProfile();
     const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -22,7 +22,7 @@ export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSu
     const {
         register,
         handleSubmit,
-        formState: { errors, isDirty },
+        formState: {errors, isDirty},
         setValue,
         reset,
     } = useForm<SettingsFormSchemas>({
@@ -42,11 +42,11 @@ export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSu
 
     const handleLogout = useCallback(async () => {
         try {
-            toast.loading('Logging out...', { id: 'logout' });
+            toast.loading('Logging out...', {id: 'logout'});
             await logout();
-            toast.success('Logged out successfully!', { id: 'logout' });
+            toast.success('Logged out successfully!', {id: 'logout'});
         } catch {
-            toast.error('Failed to logout. Please try again.', { id: 'logout' });
+            toast.error('Failed to logout. Please try again.', {id: 'logout'});
         }
     }, [logout]);
 
@@ -67,14 +67,14 @@ export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSu
         }
 
         if (Object.keys(updateData).length > 0) {
-            toast.loading('Saving profile...', { id: 'profile-update' });
+            toast.loading('Saving profile...', {id: 'profile-update'});
 
             updateProfileMutation.mutate(updateData, {
                 onSuccess: () => {
-                    toast.success('Profile updated successfully!', { id: 'profile-update' });
+                    toast.success('Profile updated successfully!', {id: 'profile-update'});
 
                     setValue('password', '');
-                    reset({ name: data.name, password: '' });
+                    reset({name: data.name, password: ''});
 
                     if (passwordInputRef.current) {
                         passwordInputRef.current.value = '';
@@ -83,7 +83,7 @@ export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSu
                     onSubmitSuccess?.();
                 },
                 onError: () => {
-                    toast.error('Failed to update profile. Please try again.', { id: 'profile-update' });
+                    toast.error('Failed to update profile. Please try again.', {id: 'profile-update'});
                 }
             });
         } else {
@@ -107,19 +107,6 @@ export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSu
             window.removeEventListener('navbar:settings-submit', handleNavbarSubmit);
         };
     }, [handleSubmit, onSubmit]);
-
-    if (isLoading || !user) {
-        return (
-            <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                    <div className="h-10 bg-gray-200 rounded animate-pulse" />
-                    <div className="h-10 bg-gray-200 rounded animate-pulse" />
-                    <div className="h-10 bg-gray-200 rounded animate-pulse" />
-                    <div className="h-10 bg-gray-200 rounded animate-pulse" />
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="space-y-4">
@@ -168,7 +155,7 @@ export const SettingsForm = memo<SettingsFormProps>(function SettingsForm({ onSu
                             variant="outline"
                             className="w-full"
                         >
-                            <LogOut className="w-4 h-4 mr-2" />
+                            <LogOut className="w-4 h-4 mr-2"/>
                             {isLoading ? 'Logging out...' : 'Logout'}
                         </Button>
                     </div>

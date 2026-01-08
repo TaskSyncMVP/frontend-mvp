@@ -6,12 +6,11 @@ import { useAuth } from '@features/auth';
 import { Input, Button } from '@shared/ui';
 import { pomodoroSettingsSchema, PomodoroSettingsSchema } from '../lib/pomodoro-schemas';
 import { useUpdatePomodoroSettings } from '../lib/pomodoro-hooks';
-import { PomodoroSettingsFormSkeleton } from './PomodoroSettingsFormSkeleton';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 export function PomodoroSettingsForm() {
-    const { user, isLoading } = useAuth();
+    const { user } = useAuth();
     const updatePomodoroMutation = useUpdatePomodoroSettings();
 
     const {
@@ -74,10 +73,6 @@ export function PomodoroSettingsForm() {
             });
         }
     };
-
-    if (isLoading || !user) {
-        return <PomodoroSettingsFormSkeleton />;
-    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
