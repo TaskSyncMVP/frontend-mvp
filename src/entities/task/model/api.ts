@@ -1,33 +1,30 @@
 import apiClient from '@shared/api/client';
-
-interface CreateTaskData {
-    name: string;
-    level: 'low' | 'medium' | 'high';
-    date?: string;
-}
-
-interface UpdateTaskData {
-    name?: string;
-    level?: 'low' | 'medium' | 'high';
-    isCompleted?: boolean;
-    status?: string;
-}
+import { Task, CreateTaskDto, UpdateTaskDto } from './types';
 
 export const taskApi = {
-    getTasks: async () => {
+    getTasks: async (): Promise<Task[]> => {
         const response = await apiClient.get('/user/tasks');
         return response.data;
     },
-    createTask: async (data: CreateTaskData) => {
+
+    createTask: async (data: CreateTaskDto): Promise<Task> => {
         const response = await apiClient.post('/user/tasks', data);
         return response.data;
     },
-    updateTask: async (id: string, data: UpdateTaskData) => {
+
+    updateTask: async (id: string, data: UpdateTaskDto): Promise<Task> => {
         const response = await apiClient.put(`/user/tasks/${id}`, data);
         return response.data;
     },
-    deleteTask: async (id: string) => {
+
+    deleteTask: async (id: string): Promise<Task> => {
         const response = await apiClient.delete(`/user/tasks/${id}`);
         return response.data;
+    },
+
+    deleteAllTasks: async (): Promise<void> => {
+        const tasks = await taskApi.getTasks();
+        const deletePromises = tasks.map(task => taskApi.deleteTask(task.id));
+        await Promise.all(deletePromises);
     },
 };

@@ -7,5 +7,6 @@ export interface TaskCardProps {
     status: string;
     level?: TaskLevel;
     isCompleted?: boolean;
+    createdAt?: string;
     onToggle?: (checked: boolean) => void;
 }
