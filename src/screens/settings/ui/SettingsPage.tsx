@@ -1,8 +1,8 @@
 'use client';
 
-import {Input} from "@shared/ui";
 import {PageHeader} from "@/widgets";
 import {SettingsForm} from "@/features/settings";
+import {PomodoroSettingsForm} from "@/features/pomodoro";
 
 export function SettingsPage() {
     return (
@@ -17,27 +17,8 @@ export function SettingsPage() {
                         <SettingsForm />
                     </div>
                     <div>
-                        <h1 className="text-base font-semibold mb-3 lg:text-xl">Pomodoro</h1> {/*Потом сделать компонент помодоро*/}
-                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                            <Input
-                                placeholder="Work Interval"
-                                disabled={true}
-                                className="opacity-50"
-                                title="Coming soon"
-                            />
-                            <Input
-                                placeholder="Interval Count"
-                                disabled={true}
-                                className="opacity-50"
-                                title="Coming soon"
-                            />
-                            <Input
-                                placeholder="Break Interval"
-                                disabled={true}
-                                className="opacity-50"
-                                title="Coming soon"
-                            />
-                        </div>
+                        <h1 className="text-base font-semibold mb-3 lg:text-xl">Pomodoro</h1>
+                        <PomodoroSettingsForm />
                     </div>
                 </div>
             </div>

@@ -12,6 +12,9 @@ export interface User {
 export interface UpdateProfileData {
   name?: string;
   password?: string;
+  workInterval?: number;
+  breakInterval?: number;
+  intervalsCount?: number;
 }
 
 export interface UpdateProfileResponse {
