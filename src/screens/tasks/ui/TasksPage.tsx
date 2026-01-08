@@ -5,13 +5,25 @@ import {TaskCard, TaskForm, DeleteAllTasksButton} from "@features/tasks";
 import {Button} from "@shared/ui";
 import {useCreateTask, useTasks, CreateTaskDto} from "@/entities/task";
 import {generateDaysWithTasks} from "@shared/lib/date-utils";
+import {useAuth} from "@features/auth";
+import {TasksPageSkeleton} from "./TasksPageSkeleton";
 
 export function TasksPage() {
     const [showFormForDay, setShowFormForDay] = useState<string | null>(null);
     const createTaskMutation = useCreateTask();
-    const { data: tasks = [], isLoading } = useTasks();
+    const { data: tasks = [], isLoading: tasksLoading } = useTasks();
+    const { isLoading: authLoading } = useAuth();
 
     const daysData = generateDaysWithTasks(tasks);
+
+    if (authLoading || tasksLoading) {
+        return (
+            <>
+                <PageHeader title="Tasks"/>
+                <TasksPageSkeleton />
+            </>
+        );
+    }
 
     const handleAddTask = (dayDate: string) => {
         setShowFormForDay(dayDate);
@@ -43,17 +55,6 @@ export function TasksPage() {
             console.error('Failed to create task:', error);
         }
     };
-
-    if (isLoading) {
-        return (
-            <>
-                <PageHeader title="Tasks"/>
-                <div className="flex justify-center items-center h-64">
-                    <div className="text-muted-foreground">Loading tasks...</div>
-                </div>
-            </>
-        );
-    }
 
     return (
         <>
