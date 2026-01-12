@@ -4,17 +4,17 @@ export const taskPrioritySchema = z.enum(["low", "medium", "high"]);
 
 export const createTaskSchema = z.object({
     name: z.string()
+        .trim()
         .min(1, "Task name is required")
-        .max(100, "Task name too long")
-        .trim(),
+        .max(100, "Task name too long"),
     priority: taskPrioritySchema,
 });
 
 export const updateTaskSchema = z.object({
     name: z.string()
+        .trim()
         .min(1, "Task name is required")
         .max(100, "Task name too long")
-        .trim()
         .optional(),
     isCompleted: z.boolean().optional(),
     priority: taskPrioritySchema.optional(),
