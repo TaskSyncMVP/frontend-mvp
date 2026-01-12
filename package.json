@@ -3,14 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "lint:check": "eslint . --ext .ts,.tsx,.js,.jsx --max-warnings 0",
     "type-check": "tsc --noEmit",
-    "test": "vitest"
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest --watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -46,17 +50,36 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^4.0.15",
+    "@vitest/ui": "^4.0.15",
     "autoprefixer": "^10.4.23",
     "eslint": "^9",
     "eslint-config-next": "16.0.10",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",
+    "jsdom": "^26.0.0",
     "lint-staged": "^16.2.7",
+    "msw": "^2.8.4",
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
     "tailwindcss": "^3.4.19",
     "typescript": "^5",
     "webpack-cli": "^6.0.1"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && pnpm type-check && pnpm test:run"
+    }
   }
 }
