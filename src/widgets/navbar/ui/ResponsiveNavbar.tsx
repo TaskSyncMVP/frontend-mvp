@@ -14,12 +14,17 @@ export function ResponsiveNavbar() {
         window.dispatchEvent(new CustomEvent('navbar:settings-submit'));
     };
 
+    const handlePomodoroToggle = () => {
+        window.dispatchEvent(new CustomEvent('navbar:pomodoro-toggle'));
+    };
+
     return (
         <>
             <div className="lg:hidden">
                 <Navbar
                     onModalToggle={() => setIsModalOpen(prev => !prev)}
                     onSubmit={pathname === '/settings' ? handleSettingsSubmit : undefined}
+                    onPomodoroToggle={pathname === '/pomodoro' ? handlePomodoroToggle : undefined}
                     isModalOpen={isModalOpen}
                 />
                 <CreateTaskModal
