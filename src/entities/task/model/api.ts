@@ -22,6 +22,7 @@ export const taskApi = {
         return response.data;
     },
 
+    // временное решение
     deleteAllTasks: async (): Promise<void> => {
         const tasks = await taskApi.getTasks();
         const deletePromises = tasks.map(task => taskApi.deleteTask(task.id));

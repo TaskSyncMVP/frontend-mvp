@@ -1,15 +1,26 @@
 'use client'
 
-import {Plus, X, Check, Play} from "lucide-react";
+import {Plus, X, Check, Play, Pause} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import {BarBackground} from "./BarBackground";
 import {NavItem} from "./NavItem";
 import {Button} from "@shared/ui";
 import {NavbarProps} from "../props/navbar-props";
+import { useEffect, useState } from "react";
 
-export function Navbar({onModalToggle, onSubmit, isModalOpen}: NavbarProps = {}) {
+export function Navbar({onModalToggle, onSubmit, onPomodoroToggle, isModalOpen}: NavbarProps = {}) {
     const pathname = usePathname();
     const router = useRouter();
+    const [pomodoroIsRunning, setPomodoroIsRunning] = useState(false);
+
+    useEffect(() => {
+        const handlePomodoroStateChange = (event: CustomEvent) => {
+            setPomodoroIsRunning(event.detail.isRunning);
+        };
+
+        window.addEventListener('pomodoro:state-change', handlePomodoroStateChange as EventListener);
+        return () => window.removeEventListener('pomodoro:state-change', handlePomodoroStateChange as EventListener);
+    }, []);
 
     const getButtonConfig = () => {
         switch (pathname) {
@@ -26,11 +37,10 @@ export function Navbar({onModalToggle, onSubmit, isModalOpen}: NavbarProps = {})
 
             case '/pomodoro':
                 return {
-                    icon: <Play size='24px'/>,
-                    onClick: () => router.back(),
+                    icon: pomodoroIsRunning ? <Pause size='24px'/> : <Play size='24px'/>,
+                    onClick: onPomodoroToggle || (() => {}),
                 }
             default:
-                // Если модальное окно открыто, показываем крестик, иначе плюс
                 return {
                     icon: isModalOpen ? <X size='24px'/> : <Plus size='24px'/>,
                     onClick: onModalToggle,

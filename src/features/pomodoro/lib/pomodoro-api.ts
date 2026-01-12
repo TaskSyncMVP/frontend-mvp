@@ -1,6 +1,6 @@
 import apiClient from '@shared/api/client';
 import { UpdatePomodoroData } from './pomodoro-schemas';
-import { User } from '@/entities/user';
+import { User } from '@/entities/user/types';
 
 export const pomodoroApi = {
     updatePomodoroSettings: async (data: UpdatePomodoroData): Promise<{ user: User }> => {
