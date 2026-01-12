@@ -1,7 +1,7 @@
 import {z} from "zod";
 
 export const loginFormSchema = z.object({
-    email: z.email().max(128),
+    email: z.string().email().max(128),
     password: z.string().min(6).max(128)
 });
 

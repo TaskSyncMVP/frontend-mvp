@@ -43,7 +43,7 @@ export function LoginForm() {
                         <Input
                             {...register("email")}
                             placeholder='Email'
-                            type="email"
+                            type="text"
                             disabled={isLoading}
                         />
                         {errors.email && (

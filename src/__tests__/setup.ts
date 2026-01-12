@@ -2,6 +2,7 @@ import '@testing-library/jest-dom'
 import { beforeAll, afterEach, afterAll, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import { server } from './mocks/server'
+import React from 'react'
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
 
@@ -42,22 +43,15 @@ vi.mock('@shared/lib/env', () => ({
   }
 }))
 
-Object.defineProperty(window, 'document', {
-  value: {
-    cookie: '',
-    getElementsByTagName: vi.fn(() => []),
-    createElement: vi.fn(() => ({
-      setAttribute: vi.fn(),
-      style: {},
-      appendChild: vi.fn()
-    })),
-    head: {
-      appendChild: vi.fn()
-    }
-  },
-  writable: true
-})
+// Mock Next.js Image component
+vi.mock('next/image', () => ({
+  default: ({ src, alt, width, height, className, ...props }: any) => {
+    // eslint-disable-next-line @next/next/no-img-element
+    return React.createElement('img', { src, alt, width, height, className, ...props })
+  }
+}))
 
+// Storage mocks
 Object.defineProperty(window, 'sessionStorage', {
   value: {
     getItem: vi.fn(() => null),
