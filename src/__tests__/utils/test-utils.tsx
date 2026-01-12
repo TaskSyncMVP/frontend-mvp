@@ -27,6 +27,19 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
+// Wrapper for hook testing with custom QueryClient
+export const createWrapper = (queryClient?: QueryClient) => {
+  const client = queryClient || createTestQueryClient()
+  
+  return ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={client}>
+      <AuthProvider>
+        {children}
+      </AuthProvider>
+    </QueryClientProvider>
+  )
+}
+
 const customRender = (
   ui: ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>

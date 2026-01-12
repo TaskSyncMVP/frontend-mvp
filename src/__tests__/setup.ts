@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { beforeAll, afterEach, afterAll } from 'vitest'
+import { beforeAll, afterEach, afterAll, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import { server } from './mocks/server'
 
@@ -44,7 +44,16 @@ vi.mock('@shared/lib/env', () => ({
 
 Object.defineProperty(window, 'document', {
   value: {
-    cookie: ''
+    cookie: '',
+    getElementsByTagName: vi.fn(() => []),
+    createElement: vi.fn(() => ({
+      setAttribute: vi.fn(),
+      style: {},
+      appendChild: vi.fn()
+    })),
+    head: {
+      appendChild: vi.fn()
+    }
   },
   writable: true
 })
