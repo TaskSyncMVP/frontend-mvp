@@ -44,7 +44,7 @@ export function RegisterForm() {
                         <Input
                             {...register("email")}
                             placeholder='Email'
-                            type="email"
+                            type="text"
                             disabled={isLoading}
                         />
                         {errors.email && (

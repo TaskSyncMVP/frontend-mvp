@@ -3,15 +3,15 @@ import {z} from "zod";
 export const settingsFormSchema = z.object({
     name: z.string()
         .min(2, "Name must be at least 2 characters")
-        .max(100, "Name must be less than 100 characters")
-        .optional()
-        .or(z.literal("")),
+        .max(100, "Name must be less than 100 characters"),
 
     password: z.string()
-        .min(6, "Password must be at least 6 characters")
-        .max(128, "Password must be less than 128 characters")
-        .optional()
-        .or(z.literal("")),
+        .refine((val) => val === "" || val.length >= 6, {
+            message: "Password must be at least 6 characters"
+        })
+        .refine((val) => val === "" || val.length <= 128, {
+            message: "Password must be less than 128 characters"
+        }),
 
     workInterval: z.number()
         .min(1, "Work interval must be at least 1 minute")
