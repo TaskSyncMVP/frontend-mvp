@@ -45,9 +45,10 @@ export function LoginForm() {
                             placeholder='Email'
                             type="text"
                             disabled={isLoading}
+                            data-testid="email-input"
                         />
                         {errors.email && (
-                            <p className="text-sm text-destructive">{errors.email.message}</p>
+                            <p className="text-sm text-destructive" data-testid="email-error">{errors.email.message}</p>
                         )}
                     </div>
                     <div className="flex gap-3 flex-col">
@@ -57,19 +58,20 @@ export function LoginForm() {
                             type="password"
                             showPasswordToggle
                             disabled={isLoading}
+                            data-testid="password-input"
                         />
                         {errors.password && (
-                            <p className="text-sm text-destructive">{errors.password.message}</p>
+                            <p className="text-sm text-destructive" data-testid="password-error">{errors.password.message}</p>
                         )}
                     </div>
                     {error && (
-                        <p className="text-sm text-destructive text-center">{error}</p>
+                        <p className="text-sm text-destructive text-center" data-testid="error-message">{error}</p>
                     )}
-                    <Button className="w-full" size="xl" type="submit" disabled={isLoading}>
+                    <Button className="w-full" size="xl" type="submit" disabled={isLoading} data-testid="login-button">
                         {isLoading ? 'Logging in...' : 'Enter'}
                     </Button>
                 </form>
-                <LinkButton href="/registration">Registration</LinkButton>
+                <LinkButton href="/registration" data-testid="register-link">Registration</LinkButton>
             </div>
         </div>
     );

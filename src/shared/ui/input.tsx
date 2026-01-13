@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 
 export interface InputProps extends React.ComponentProps<"input"> {
   showPasswordToggle?: boolean;
+  'data-testid'?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(

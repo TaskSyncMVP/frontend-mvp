@@ -180,14 +180,27 @@ describe('SettingsForm', () => {
     })
 
     it.skip('should submit form with updated password only', async () => {
-      // This test is skipped because the form's isDirty state may not update correctly in tests
-      // when only password is changed without changing name
       render(<SettingsForm />)
 
+      // First, we need to make the form dirty by changing the name field, then change it back
+      const nameInput = screen.getByPlaceholderText('Name')
       const passwordInput = screen.getByPlaceholderText('New Password (leave empty to keep current)')
+      
+      // Make form dirty by typing in name field
+      // First change name to make form dirty, then change back
+      await user.clear(nameInput)
+      await user.type(nameInput, 'Different Name') // Make it different first
+      await user.clear(nameInput)
+      await user.type(nameInput, 'Test User') // Back to original value
+      
+      // Now type password - this should make the form dirty
       await user.type(passwordInput, 'newpassword123')
 
       const saveButton = screen.getByRole('button', { name: /Save Profile/i })
+      
+      // Button should be enabled because password changed
+      expect(saveButton).not.toBeDisabled()
+      
       await user.click(saveButton)
 
       await waitFor(() => {
@@ -199,7 +212,6 @@ describe('SettingsForm', () => {
     })
 
     it.skip('should submit form with both name and password', async () => {
-      // This test is skipped because password field logic is complex in the component
       render(<SettingsForm />)
 
       const nameInput = screen.getByPlaceholderText('Name')
@@ -352,12 +364,13 @@ describe('SettingsForm', () => {
     })
 
     it.skip('should show password validation error for short non-empty password', async () => {
-      // This test is skipped because the component uses react-hook-form validation
-      // which may not show errors immediately in the test environment
       render(<SettingsForm />)
 
+      const nameInput = screen.getByPlaceholderText('Name')
       const passwordInput = screen.getByPlaceholderText('New Password (leave empty to keep current)')
       
+      // Make form dirty first
+      await user.type(nameInput, 'temp')
       await user.type(passwordInput, '123')
 
       const saveButton = screen.getByRole('button', { name: /Save Profile/i })
@@ -406,18 +419,19 @@ describe('SettingsForm', () => {
     })
 
     it.skip('should handle logout errors', async () => {
-      // This test is skipped due to complex async error handling in the component
       mockLogout.mockRejectedValueOnce(new Error('Logout failed'))
 
       render(<SettingsForm />)
 
       const logoutButton = screen.getByRole('button', { name: /Logout/i })
       
-      // Click and wait for the async operation
       await user.click(logoutButton)
 
       await waitFor(() => {
         expect(mockLogout).toHaveBeenCalled()
+      })
+      
+      await waitFor(() => {
         expect(toast.error).toHaveBeenCalledWith('Failed to logout. Please try again.', { id: 'logout' })
       })
     })
@@ -471,8 +485,6 @@ describe('SettingsForm', () => {
 
   describe('User Data Updates', () => {
     it.skip('should update form when user data changes', async () => {
-      // This test is skipped because of complex mock state management
-      // The component correctly updates via useEffect when user data changes
       const { rerender } = render(<SettingsForm />)
 
       expect(screen.getByPlaceholderText('Name')).toHaveValue('Test User')
@@ -491,13 +503,14 @@ describe('SettingsForm', () => {
         isLoading: false
       } as any)
 
+      // Re-render with updated user data
       rerender(<SettingsForm />)
 
-      // The form should update immediately since useEffect runs on user change
-      expect(screen.getByPlaceholderText('Name')).toHaveValue('Updated User')
-      expect(screen.getByPlaceholderText('Email')).toHaveValue('updated@example.com')
+      await waitFor(() => {
+        expect(screen.getByPlaceholderText('Name')).toHaveValue('Updated User')
+        expect(screen.getByPlaceholderText('Email')).toHaveValue('updated@example.com')
+      })
     })
-
     it('should handle user with no name', () => {
       const userWithoutName = {
         id: '1',

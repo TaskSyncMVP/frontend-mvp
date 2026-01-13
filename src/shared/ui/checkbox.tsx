@@ -9,6 +9,7 @@ import {TaskLevel} from "@shared/lib/types"
 
 export interface TaskCheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
     level?: TaskLevel
+    'data-testid'?: string;
 }
 
 const Checkbox = React.forwardRef<

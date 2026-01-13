@@ -65,12 +65,14 @@ export interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement>,
         VariantProps<typeof buttonVariants> {
     asChild?: boolean
+    'data-testid'?: string;
 }
 
 export interface LinkButtonProps
     extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
         VariantProps<typeof linkVariants> {
     href: string
+    'data-testid'?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
