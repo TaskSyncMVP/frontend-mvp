@@ -8,6 +8,7 @@ import { pomodoroSettingsSchema, PomodoroSettingsSchema } from '../lib/pomodoro-
 import { useUpdatePomodoroSettings } from '../lib/pomodoro-hooks';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
+import { POMODORO_DEFAULTS } from '@shared/constants/pomodoro';
 
 export function PomodoroSettingsForm() {
     const { user } = useAuth();
@@ -22,21 +23,21 @@ export function PomodoroSettingsForm() {
     } = useForm<PomodoroSettingsSchema>({
         resolver: zodResolver(pomodoroSettingsSchema),
         defaultValues: {
-            workInterval: 25,
-            breakInterval: 5,
-            intervalsCount: 4,
+            workInterval: POMODORO_DEFAULTS.WORK_INTERVAL,
+            breakInterval: POMODORO_DEFAULTS.BREAK_INTERVAL,
+            intervalsCount: POMODORO_DEFAULTS.INTERVALS_COUNT,
         },
     });
 
     useEffect(() => {
         if (user) {
-            setValue('workInterval', user.workInterval || 25);
-            setValue('breakInterval', user.breakInterval || 5);
-            setValue('intervalsCount', user.intervalsCount || 4);
+            setValue('workInterval', user.workInterval || POMODORO_DEFAULTS.WORK_INTERVAL);
+            setValue('breakInterval', user.breakInterval || POMODORO_DEFAULTS.BREAK_INTERVAL);
+            setValue('intervalsCount', user.intervalsCount || POMODORO_DEFAULTS.INTERVALS_COUNT);
             reset({
-                workInterval: user.workInterval || 25,
-                breakInterval: user.breakInterval || 5,
-                intervalsCount: user.intervalsCount || 4,
+                workInterval: user.workInterval || POMODORO_DEFAULTS.WORK_INTERVAL,
+                breakInterval: user.breakInterval || POMODORO_DEFAULTS.BREAK_INTERVAL,
+                intervalsCount: user.intervalsCount || POMODORO_DEFAULTS.INTERVALS_COUNT,
             });
         }
     }, [user, setValue, reset]);
@@ -82,8 +83,8 @@ export function PomodoroSettingsForm() {
                         {...register('workInterval', { valueAsNumber: true })}
                         placeholder="Work Interval (min)"
                         type="number"
-                        min="1"
-                        max="60"
+                        min={POMODORO_DEFAULTS.MIN_INTERVAL.toString()}
+                        max={POMODORO_DEFAULTS.MAX_WORK_INTERVAL.toString()}
                         disabled={updatePomodoroMutation.isPending}
                     />
                     {errors.workInterval && (
@@ -96,8 +97,8 @@ export function PomodoroSettingsForm() {
                         {...register('breakInterval', { valueAsNumber: true })}
                         placeholder="Break Interval (min)"
                         type="number"
-                        min="1"
-                        max="30"
+                        min={POMODORO_DEFAULTS.MIN_INTERVAL.toString()}
+                        max={POMODORO_DEFAULTS.MAX_BREAK_INTERVAL.toString()}
                         disabled={updatePomodoroMutation.isPending}
                     />
                     {errors.breakInterval && (
@@ -112,22 +113,23 @@ export function PomodoroSettingsForm() {
                     {...register('intervalsCount', { valueAsNumber: true })}
                     placeholder="Intervals Count"
                     type="number"
-                    min="1"
-                    max="10"
+                    min={POMODORO_DEFAULTS.MIN_INTERVAL.toString()}
+                    max={POMODORO_DEFAULTS.MAX_INTERVALS.toString()}
                     disabled={updatePomodoroMutation.isPending}
                 />
                 {errors.intervalsCount && (
                     <p className="text-sm text-destructive mt-1">{errors.intervalsCount.message}</p>
                 )}
+                <Button
+                    type="submit"
+                    disabled={!isDirty || updatePomodoroMutation.isPending}
+                    className="hidden md:flex"
+                >
+                    {updatePomodoroMutation.isPending ? 'Saving...' : 'Save Pomodoro Settings'}
+                </Button>
             </div>
 
-            <Button
-                type="submit"
-                disabled={!isDirty || updatePomodoroMutation.isPending}
-                className="w-full"
-            >
-                {updatePomodoroMutation.isPending ? 'Saving...' : 'Save Pomodoro Settings'}
-            </Button>
+
         </form>
     );
 }
