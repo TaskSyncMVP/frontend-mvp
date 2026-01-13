@@ -123,7 +123,7 @@ export function TaskForm({
     const isDisabled = disabled || isSubmitting;
 
     return (
-        <form onSubmit={handleSubmit(handleFormSubmit)} className={taskFormVariants({ variant, className })}>
+        <form onSubmit={handleSubmit(handleFormSubmit)} className={taskFormVariants({ variant, className })} data-testid="task-form">
             {showHeader && (
                 <div className="flex justify-between items-center mb-2">
                     <h4 className={`text-base font-medium ${labelVariants({ variant })}`}>New Task</h4>
@@ -135,6 +135,7 @@ export function TaskForm({
                             onClick={onCancel}
                             className={cancelButtonVariants({ variant })}
                             disabled={isDisabled}
+                            data-testid="cancel-task-button"
                         >
                             <X size={14} />
                         </Button>
@@ -148,9 +149,10 @@ export function TaskForm({
                     placeholder="Enter task name"
                     className={inputVariants({ variant })}
                     disabled={isDisabled}
+                    data-testid="task-title-input"
                 />
                 {errors.name && (
-                    <p className="text-sm text-destructive">{errors.name.message}</p>
+                    <p className="text-sm text-destructive" data-testid="title-error">{errors.name.message}</p>
                 )}
             </div>
             <div className="grid grid-cols-1 gap-2">
@@ -213,6 +215,7 @@ export function TaskForm({
                     variant={variant === 'primary' ? 'secondary' : 'default'}
                     className={submitButtonVariants({ variant })}
                     disabled={isDisabled}
+                    data-testid="save-task-button"
                 >
                     <Check />
                 </Button>

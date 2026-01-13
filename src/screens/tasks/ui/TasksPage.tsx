@@ -83,6 +83,7 @@ export function TasksPage() {
                                         className="w-full mt-2 flex items-center gap-2"
                                         onClick={() => handleAddTask(day.date)}
                                         disabled={createTaskMutation.isPending}
+                                        data-testid="create-task-button"
                                     >
                                         {createTaskMutation.isPending ? 'Creating...' : 'Create task'}
                                     </Button>
