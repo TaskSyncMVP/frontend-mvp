@@ -74,14 +74,24 @@ const submitButtonVariants = cva("flex justify-center", {
 export type TaskFormVariant = VariantProps<typeof taskFormVariants>["variant"];
 
 export interface TaskFormProps {
-    onSubmit: (data: CreateTaskForm) => void;
+    onSubmit: (data: CreateTaskForm, targetDate?: string) => void | Promise<void>;
     onCancel?: () => void;
     variant?: TaskFormVariant;
     showHeader?: boolean;
     className?: string;
+    disabled?: boolean;
+    targetDate?: string;
 }
 
-export function TaskForm({ onSubmit, onCancel, variant = 'default', showHeader = false, className = "" }: TaskFormProps) {
+export function TaskForm({ 
+    onSubmit, 
+    onCancel, 
+    variant = 'default', 
+    showHeader = false, 
+    className = "",
+    disabled = false,
+    targetDate
+}: TaskFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const {
@@ -94,14 +104,14 @@ export function TaskForm({ onSubmit, onCancel, variant = 'default', showHeader =
         resolver: zodResolver(createTaskSchema),
         defaultValues: {
             name: "",
-            level: "medium",
+            priority: "medium",
         },
     });
 
     const handleFormSubmit = async (data: CreateTaskForm) => {
         setIsSubmitting(true);
         try {
-            await onSubmit(data);
+            await Promise.resolve(onSubmit(data, targetDate));
             reset();
         } catch (error) {
             console.error("Failed to create task:", error);
@@ -110,8 +120,10 @@ export function TaskForm({ onSubmit, onCancel, variant = 'default', showHeader =
         }
     };
 
+    const isDisabled = disabled || isSubmitting;
+
     return (
-        <form onSubmit={handleSubmit(handleFormSubmit)} className={taskFormVariants({ variant, className })}>
+        <form onSubmit={handleSubmit(handleFormSubmit)} className={taskFormVariants({ variant, className })} data-testid="task-form">
             {showHeader && (
                 <div className="flex justify-between items-center mb-2">
                     <h4 className={`text-base font-medium ${labelVariants({ variant })}`}>New Task</h4>
@@ -122,6 +134,8 @@ export function TaskForm({ onSubmit, onCancel, variant = 'default', showHeader =
                             size="sm"
                             onClick={onCancel}
                             className={cancelButtonVariants({ variant })}
+                            disabled={isDisabled}
+                            data-testid="cancel-task-button"
                         >
                             <X size={14} />
                         </Button>
@@ -134,42 +148,65 @@ export function TaskForm({ onSubmit, onCancel, variant = 'default', showHeader =
                     {...register("name")}
                     placeholder="Enter task name"
                     className={inputVariants({ variant })}
+                    disabled={isDisabled}
+                    data-testid="task-title-input"
                 />
                 {errors.name && (
-                    <p className="text-sm text-destructive">{errors.name.message}</p>
+                    <p className="text-sm text-destructive" data-testid="title-error">{errors.name.message}</p>
                 )}
             </div>
             <div className="grid grid-cols-1 gap-2">
                 <Label className={labelVariants({ variant })}>Priority</Label>
                 <Controller
-                    name="level"
+                    name="priority"
                     control={control}
                     render={({field}) => (
                         <div className='inline-flex gap-3'>
                             <Badge
                                 variant="high"
-                                className={`cursor-pointer ${field.value === 'high' ? 'ring-2 ring-white' : ''}`}
-                                onClick={() => field.onChange('high')}
+                                className={`cursor-pointer transition-all duration-200 ${
+                                    field.value === 'high' 
+                                        ? variant === 'primary' 
+                                            ? 'ring-2 ring-white shadow-lg' 
+                                            : 'ring-2 ring-primary-100 shadow-lg'
+                                        : 'opacity-70 hover:opacity-100'
+                                } ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => !isDisabled && field.onChange('high')}
                             >
                                 High
                             </Badge>
                             <Badge
                                 variant="medium"
-                                className={`cursor-pointer ${field.value === 'medium' ? 'ring-2 ring-white' : ''}`}
-                                onClick={() => field.onChange('medium')}
+                                className={`cursor-pointer transition-all duration-200 ${
+                                    field.value === 'medium' 
+                                        ? variant === 'primary' 
+                                            ? 'ring-2 ring-white shadow-lg' 
+                                            : 'ring-2 ring-primary-100 shadow-lg'
+                                        : 'opacity-70 hover:opacity-100'
+                                } ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => !isDisabled && field.onChange('medium')}
                             >
                                 Medium
                             </Badge>
                             <Badge
                                 variant="low"
-                                className={`cursor-pointer ${field.value === 'low' ? 'ring-2 ring-white' : ''}`}
-                                onClick={() => field.onChange('low')}
+                                className={`cursor-pointer transition-all duration-200 ${
+                                    field.value === 'low' 
+                                        ? variant === 'primary' 
+                                            ? 'ring-2 ring-white shadow-lg' 
+                                            : 'ring-2 ring-primary-100 shadow-lg'
+                                        : 'opacity-70 hover:opacity-100'
+                                } ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => !isDisabled && field.onChange('low')}
                             >
                                 Low
                             </Badge>
                         </div>
                     )}
                 />
+                {errors.priority && (
+                    <p className="text-sm text-destructive">{errors.priority.message}</p>
+                )}
             </div>
             <div className={`flex justify-center gap-2 ${variant === "default" ? "pt-12" : '' }`}>
                 <Button
@@ -177,7 +214,8 @@ export function TaskForm({ onSubmit, onCancel, variant = 'default', showHeader =
                     size='lg'
                     variant={variant === 'primary' ? 'secondary' : 'default'}
                     className={submitButtonVariants({ variant })}
-                    disabled={isSubmitting}
+                    disabled={isDisabled}
+                    data-testid="save-task-button"
                 >
                     <Check />
                 </Button>

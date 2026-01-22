@@ -1,3 +1,3 @@
-export type { User } from './model/types';
-export { userApi } from './model/api';
-export { useUserStore } from './model/store';
+export * from './types';
+export * from './api';
+export * from './hooks';

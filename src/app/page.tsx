@@ -2,17 +2,18 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { cookies } from '@/shared/lib/cookies';
 
 export default function RootPage() {
     const router = useRouter();
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = cookies.get('accessToken');
 
         if (token) {
             router.replace('/home');
         } else {
-            router.replace('/main');
+            router.replace('/login');
         }
     }, [router]);
 

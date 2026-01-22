@@ -4,19 +4,34 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button, LinkButton, Input} from "@shared/ui";
 import {loginFormSchema, LoginFormSchemas} from "../../lib/login-form-schemas";
+import {useAuth} from "../../lib/auth-context";
+import {useRouter} from "next/navigation";
+import {safeStorage} from "@shared/lib/storage";
 
 export function LoginForm() {
+    const { login, isLoading, error, clearError } = useAuth();
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
+        reset,
         formState: {errors},
     } = useForm<LoginFormSchemas>({
         resolver: zodResolver(loginFormSchema),
     });
 
-    const onSubmit = (data: LoginFormSchemas) => {
-        console.log("Login data:", data);
-        // TODO: Implement login logic
+    const onSubmit = async (data: LoginFormSchemas) => {
+        try {
+            clearError();
+            await login(data);
+            reset();
+            const redirectTo = safeStorage.getItem('redirectAfterLogin') || '/home';
+            safeStorage.removeItem('redirectAfterLogin');
+            router.push(redirectTo);
+        } catch {
+            // Error is handled by auth context
+        }
     };
 
     return (
@@ -28,10 +43,12 @@ export function LoginForm() {
                         <Input
                             {...register("email")}
                             placeholder='Email'
-                            type="email"
+                            type="text"
+                            disabled={isLoading}
+                            data-testid="email-input"
                         />
                         {errors.email && (
-                            <p className="text-sm text-destructive">{errors.email.message}</p>
+                            <p className="text-sm text-destructive" data-testid="email-error">{errors.email.message}</p>
                         )}
                     </div>
                     <div className="flex gap-3 flex-col">
@@ -39,14 +56,22 @@ export function LoginForm() {
                             {...register("password")}
                             placeholder="Password"
                             type="password"
+                            showPasswordToggle
+                            disabled={isLoading}
+                            data-testid="password-input"
                         />
                         {errors.password && (
-                            <p className="text-sm text-destructive">{errors.password.message}</p>
+                            <p className="text-sm text-destructive" data-testid="password-error">{errors.password.message}</p>
                         )}
                     </div>
-                    <Button className="w-full" size="xl" type="submit">Enter</Button>
+                    {error && (
+                        <p className="text-sm text-destructive text-center" data-testid="error-message">{error}</p>
+                    )}
+                    <Button className="w-full" size="xl" type="submit" disabled={isLoading} data-testid="login-button">
+                        {isLoading ? 'Logging in...' : 'Enter'}
+                    </Button>
                 </form>
-                <LinkButton href="/registration">Registration</LinkButton>
+                <LinkButton href="/registration" data-testid="register-link">Registration</LinkButton>
             </div>
         </div>
     );

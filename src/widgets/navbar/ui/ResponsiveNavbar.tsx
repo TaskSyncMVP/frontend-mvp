@@ -1,17 +1,32 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Navbar } from './Navbar';
 import { DesktopNavbar } from './DesktopNavbar';
 import { CreateTaskModal } from '@features/tasks';
 
 export function ResponsiveNavbar() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const pathname = usePathname();
+
+    const handleSettingsSubmit = () => {
+        window.dispatchEvent(new CustomEvent('navbar:settings-submit'));
+    };
+
+    const handlePomodoroToggle = () => {
+        window.dispatchEvent(new CustomEvent('navbar:pomodoro-toggle'));
+    };
 
     return (
         <>
             <div className="lg:hidden">
-                <Navbar onModalToggle={() => setIsModalOpen(prev => !prev)} />
+                <Navbar
+                    onModalToggle={() => setIsModalOpen(prev => !prev)}
+                    onSubmit={pathname === '/settings' ? handleSettingsSubmit : undefined}
+                    onPomodoroToggle={pathname === '/pomodoro' ? handlePomodoroToggle : undefined}
+                    isModalOpen={isModalOpen}
+                />
                 <CreateTaskModal
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}

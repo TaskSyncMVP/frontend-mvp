@@ -1,0 +1,16 @@
+<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="6.9774899999999995">
+<testsuite name="specs\basic-ui.spec.ts" timestamp="2026-01-13T11:24:01.677Z" hostname="chromium" tests="6" failures="0" skipped="0" time="26.567" errors="0">
+<testcase name="Базовые UI тесты › должен отображать страницу входа с правильными элементами" classname="specs\basic-ui.spec.ts" time="3.85">
+</testcase>
+<testcase name="Базовые UI тесты › должен переходить на страницу регистрации" classname="specs\basic-ui.spec.ts" time="5.554">
+</testcase>
+<testcase name="Базовые UI тесты › должен показывать ошибки валидации при пустых полях" classname="specs\basic-ui.spec.ts" time="4.582">
+</testcase>
+<testcase name="Базовые UI тесты › должен показывать ошибку при неверном формате email" classname="specs\basic-ui.spec.ts" time="4.766">
+</testcase>
+<testcase name="Базовые UI тесты › должен работать переключатель видимости пароля" classname="specs\basic-ui.spec.ts" time="4.049">
+</testcase>
+<testcase name="Базовые UI тесты › должен корректно отображаться на мобильных устройствах" classname="specs\basic-ui.spec.ts" time="3.766">
+</testcase>
+</testsuite>
+</testsuites>

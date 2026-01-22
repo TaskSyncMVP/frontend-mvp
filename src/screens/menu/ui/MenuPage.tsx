@@ -1,3 +1,5 @@
+'use client';
+
 import { PageHeader } from "@/widgets";
 import { MenuButton } from "./MenuButton";
 
