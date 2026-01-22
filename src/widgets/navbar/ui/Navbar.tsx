@@ -57,7 +57,7 @@ export function Navbar({onModalToggle, onSubmit, onPomodoroToggle, isModalOpen}:
                 className="fixed inset-x-0 bottom-0 z-50 h-14 pb-[env(safe-area-inset-bottom)]">
                 <BarBackground/>
 
-                <div className="relative h-full flex items-center justify-between px-8">
+                <div className="relative h-full flex items-center justify-between px-2">
                     <div className="flex-1 flex justify-around max-w-[40%] sm:gap-6 md:gap-8">
                         <NavItem iconType="home" href="/home"/>
                         <NavItem iconType="calendar" href="/time-blocking"/>
