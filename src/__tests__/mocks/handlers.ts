@@ -157,6 +157,47 @@ export const handlers = [
     return HttpResponse.json({ message: 'Task deleted successfully' })
   }),
 
+  http.put(`${API_URL}/user/tasks/:id/move`, async ({ params, request }) => {
+    const taskId = params.id as string
+    const body = await request.json() as { targetDate: string }
+    
+    const task = mockTasks.find(task => task.id === taskId)
+    if (!task) {
+      return HttpResponse.json(
+        { message: 'Task not found' },
+        { status: 404 }
+      )
+    }
+
+    // Extract clean name from task
+    const extractDateFromTaskName = (taskName: string): { date: string | null; cleanName: string } => {
+      const datePrefix = taskName.match(/^\[(\d{4}-\d{2}-\d{2})\]\s*/);
+      if (datePrefix) {
+        return {
+          date: datePrefix[1],
+          cleanName: taskName.replace(/^\[(\d{4}-\d{2}-\d{2})\]\s*/, '')
+        };
+      }
+      return { date: null, cleanName: taskName };
+    };
+
+    const { cleanName } = extractDateFromTaskName(task.name);
+    const today = new Date().toISOString().split('T')[0];
+    
+    let newTaskName = cleanName;
+    if (body.targetDate !== today) {
+      newTaskName = `[${body.targetDate}] ${cleanName}`;
+    }
+
+    const updatedTask = {
+      ...task,
+      name: newTaskName,
+      updatedAt: new Date().toISOString()
+    }
+    
+    return HttpResponse.json(updatedTask)
+  }),
+
   // Pomodoro endpoints
   http.get(`${API_URL}/pomodoro/current`, () => {
     return HttpResponse.json(mockPomodoroSession)

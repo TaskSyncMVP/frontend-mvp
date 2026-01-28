@@ -17,6 +17,11 @@ export const taskApi = {
         return response.data;
     },
 
+    moveTaskToDate: async (id: string, targetDate: string): Promise<Task> => {
+        const response = await apiClient.put(`/user/tasks/${id}/move`, { targetDate });
+        return response.data;
+    },
+
     deleteTask: async (id: string): Promise<Task> => {
         const response = await apiClient.delete(`/user/tasks/${id}`);
         return response.data;
