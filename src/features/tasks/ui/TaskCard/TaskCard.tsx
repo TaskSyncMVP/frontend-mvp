@@ -34,9 +34,9 @@ export function TaskCard({
 
     return (
         <div className="w-full bg-white rounded-large grid grid-cols-[1fr_auto] items-center px-4 py-3 shadow-drop
-        border-border gap-4">
+        border-border gap-4" data-testid="task-card">
             <div className="grid gap-6">
-                <h3 className={`text-sm font-regular truncate ${isCompleted ? 'line-through text-muted' : 'text-foreground'}`}>
+                <h3 className={`text-sm font-regular truncate ${isCompleted ? 'line-through text-muted' : 'text-foreground'}`} data-testid="task-title">
                     {title}
                 </h3>
                 <div className="flex items-center gap-1">
@@ -56,8 +56,9 @@ export function TaskCard({
                     checked={isCompleted}
                     onCheckedChange={handleToggle}
                     disabled={updateTaskMutation.isPending}
+                    data-testid="task-checkbox"
                 />
-                <Badge variant={level} size="mini">
+                <Badge variant={level} size="mini" data-testid="priority-badge">
                     {level.charAt(0).toUpperCase() + level.slice(1)}
                 </Badge>
             </div>

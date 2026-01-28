@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { 
   groupTasksByDays, 
   generateDaysWithTasks, 
@@ -10,6 +10,18 @@ import {
 import { Task } from '@/entities/task'
 
 describe('Date Utils - Days Functionality', () => {
+  // Mock the current date to be 2026-01-12
+  const mockDate = new Date('2026-01-12T10:00:00Z')
+  
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(mockDate)
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   const mockTasks: Task[] = [
     {
       id: '1',
@@ -189,14 +201,6 @@ describe('Date Utils - Days Functionality', () => {
 
   describe('getTodayTasks', () => {
     it('should return tasks for today only', () => {
-      // Mock today's date to match our test data
-      const today = '2026-01-12'
-      const todayTasks = mockTasks.filter(task => {
-        const { date } = extractDateFromTaskName(task.name)
-        const targetDate = date || task.createdAt.split('T')[0]
-        return targetDate === today
-      })
-
       const result = getTodayTasks(mockTasks)
 
       expect(result).toHaveLength(2) // Tasks 1 and 3 are for today

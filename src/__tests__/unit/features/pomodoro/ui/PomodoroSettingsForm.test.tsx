@@ -264,7 +264,6 @@ describe('PomodoroSettingsForm', () => {
 
   describe('Form Validation', () => {
     it.skip('should show validation error for invalid work interval', async () => {
-      // This test is skipped because react-hook-form validation may not work properly in test environment
       render(<PomodoroSettingsForm />)
 
       const workIntervalInput = screen.getByPlaceholderText('Work Interval (min)')
@@ -280,7 +279,6 @@ describe('PomodoroSettingsForm', () => {
     })
 
     it.skip('should show validation error for invalid break interval', async () => {
-      // This test is skipped because react-hook-form validation may not work properly in test environment
       render(<PomodoroSettingsForm />)
 
       const breakIntervalInput = screen.getByPlaceholderText('Break Interval (min)')
@@ -296,7 +294,6 @@ describe('PomodoroSettingsForm', () => {
     })
 
     it.skip('should show validation error for invalid intervals count', async () => {
-      // This test is skipped because react-hook-form validation may not work properly in test environment
       render(<PomodoroSettingsForm />)
 
       const intervalsCountInput = screen.getByPlaceholderText('Intervals Count')
@@ -307,44 +304,41 @@ describe('PomodoroSettingsForm', () => {
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(screen.getByText('Interval count must be at least 1')).toBeInTheDocument()
+        expect(screen.getByText('Intervals count must be at least 1')).toBeInTheDocument()
       })
     })
 
     it.skip('should show validation error for too high work interval', async () => {
-      // This test is skipped because react-hook-form validation may not work properly in test environment
       render(<PomodoroSettingsForm />)
 
       const workIntervalInput = screen.getByPlaceholderText('Work Interval (min)')
       const submitButton = screen.getByRole('button', { name: /Save Pomodoro Settings/i })
 
       await user.clear(workIntervalInput)
-      await user.type(workIntervalInput, '121')
+      await user.type(workIntervalInput, '61')
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(screen.getByText('Work interval must be less than 120 minutes')).toBeInTheDocument()
+        expect(screen.getByText('Work interval cannot exceed 60 minutes')).toBeInTheDocument()
       })
     })
 
     it.skip('should show validation error for too high break interval', async () => {
-      // This test is skipped because react-hook-form validation may not work properly in test environment
       render(<PomodoroSettingsForm />)
 
       const breakIntervalInput = screen.getByPlaceholderText('Break Interval (min)')
       const submitButton = screen.getByRole('button', { name: /Save Pomodoro Settings/i })
 
       await user.clear(breakIntervalInput)
-      await user.type(breakIntervalInput, '61')
+      await user.type(breakIntervalInput, '31')
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(screen.getByText('Break interval must be less than 60 minutes')).toBeInTheDocument()
+        expect(screen.getByText('Break interval cannot exceed 30 minutes')).toBeInTheDocument()
       })
     })
 
     it.skip('should show validation error for too high intervals count', async () => {
-      // This test is skipped because react-hook-form validation may not work properly in test environment
       render(<PomodoroSettingsForm />)
 
       const intervalsCountInput = screen.getByPlaceholderText('Intervals Count')
@@ -355,7 +349,7 @@ describe('PomodoroSettingsForm', () => {
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(screen.getByText('Interval count must be less than 10')).toBeInTheDocument()
+        expect(screen.getByText('Intervals count cannot exceed 10')).toBeInTheDocument()
       })
     })
   })
@@ -461,8 +455,7 @@ describe('PomodoroSettingsForm', () => {
   })
 
   describe('Edge Cases', () => {
-    it.skip('should handle form reset after successful submission', async () => {
-      // This test is skipped because form reset behavior is complex with react-hook-form
+    it('should handle form reset after successful submission', async () => {
       render(<PomodoroSettingsForm />)
 
       const workIntervalInput = screen.getByPlaceholderText('Work Interval (min)')
@@ -479,8 +472,10 @@ describe('PomodoroSettingsForm', () => {
       const onSuccess = mutateCall[1].onSuccess
       onSuccess()
 
-      // Form should be reset and button disabled again
-      expect(submitButton).toBeDisabled()
+      // Form should be reset and button disabled again (because no changes)
+      await waitFor(() => {
+        expect(submitButton).toBeDisabled()
+      })
     })
 
     it('should only submit changed fields', async () => {
