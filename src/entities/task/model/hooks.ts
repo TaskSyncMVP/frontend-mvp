@@ -119,3 +119,28 @@ export const useToggleTaskCompletion = () => {
         },
     });
 };
+
+export const useMoveTask = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ id, targetDate }: { id: string; targetDate: string }) => 
+            taskApi.moveTaskToDate(id, targetDate),
+        onSuccess: (updatedTask) => {
+            queryClient.setQueryData<Task[]>(taskKeys.lists(), (old) => {
+                return old ? old.map(task => 
+                    task.id === updatedTask.id ? updatedTask : task
+                ) : [updatedTask];
+            });
+            
+            queryClient.setQueryData(taskKeys.detail(updatedTask.id), updatedTask);
+            queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+            
+            toast.success('Task moved successfully!');
+        },
+        onError: (error) => {
+            console.error('Failed to move task:', error);
+            toast.error('Failed to move task. Please try again.');
+        },
+    });
+};

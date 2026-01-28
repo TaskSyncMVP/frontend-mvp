@@ -15,5 +15,6 @@ export {
     useDeleteTask, 
     useDeleteAllTasks,
     useToggleTaskCompletion,
+    useMoveTask,
     taskKeys 
 } from './model/hooks';

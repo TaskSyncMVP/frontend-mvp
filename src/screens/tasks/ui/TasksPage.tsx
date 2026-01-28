@@ -1,18 +1,38 @@
 'use client'
 import {useState} from "react";
+import {
+    DndContext,
+    DragEndEvent,
+    DragOverlay,
+    DragStartEvent,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core';
 import {PageHeader} from "@/widgets";
-import {TaskCard, TaskForm, DeleteAllTasksButton} from "@features/tasks";
-import {Button} from "@shared/ui";
-import {useCreateTask, useTasks, CreateTaskDto} from "@/entities/task";
-import {generateDaysWithTasks} from "@shared/lib/date-utils";
+import {TaskCard, DeleteAllTasksButton} from "@features/tasks";
+import {useCreateTask, useTasks, CreateTaskDto, useMoveTask} from "@/entities/task";
+import {generateDaysWithTasks, TaskWithLevel} from "@shared/lib/date-utils";
 import {useAuth} from "@features/auth";
 import {TasksPageSkeleton} from "./TasksPageSkeleton";
+import {AnimatedDroppableDay} from "@features/tasks/ui/DroppableDay/AnimatedDroppableDay";
 
 export function TasksPage() {
     const [showFormForDay, setShowFormForDay] = useState<string | null>(null);
+    const [activeTask, setActiveTask] = useState<TaskWithLevel | null>(null);
+    
     const createTaskMutation = useCreateTask();
+    const moveTaskMutation = useMoveTask();
     const { data: tasks = [], isLoading: tasksLoading } = useTasks();
     const { isLoading: authLoading } = useAuth();
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 8,
+            },
+        })
+    );
 
     const daysData = generateDaysWithTasks(tasks);
 
@@ -56,51 +76,91 @@ export function TasksPage() {
         }
     };
 
+    const handleDragStart = (event: DragStartEvent) => {
+        const { active } = event;
+        if (active.data.current?.type === 'task') {
+            setActiveTask(active.data.current.task);
+        }
+    };
+
+    const handleDragEnd = async (event: DragEndEvent) => {
+        const { active, over } = event;
+        
+        if (!over) {
+            setActiveTask(null);
+            return;
+        }
+
+        const activeTask = active.data.current?.task;
+        const overData = over.data.current;
+
+        if (!activeTask || !overData) {
+            setActiveTask(null);
+            return;
+        }
+
+        // Если перетаскиваем на другой день
+        if (overData.type === 'day') {
+            const targetDate = overData.date;
+            
+            try {
+                await moveTaskMutation.mutateAsync({
+                    id: activeTask.id,
+                    targetDate: targetDate
+                });
+            } catch (error) {
+                console.error('Failed to move task:', error);
+            }
+        }
+
+        setActiveTask(null);
+    };
+
     return (
         <>
             <PageHeader title="Tasks"/>
             <div className="flex flex-col pt-16 gap-6">
                 <div className="overflow-x-auto pb-4 -mx-8">
-                    <div className="flex gap-6 p-4 min-w-max -ml-2">
-                        {daysData.map((day) => (
-                            <div key={day.date} className="flex flex-col gap-4 w-80">
-                                <div className="flex items-center justify-between">
-                                    <h3 className="text-base font-regular text-start">
-                                        {day.day} {day.month}
-                                    </h3>
-                                    {day.date === daysData[0]?.date && (
-                                        <DeleteAllTasksButton />
-                                    )}
+                    <DndContext
+                        sensors={sensors}
+                        onDragStart={handleDragStart}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <div className="flex gap-6 p-4 min-w-max -ml-2">
+                            {daysData.map((day) => (
+                                <AnimatedDroppableDay
+                                    key={day.date}
+                                    day={day}
+                                    showFormForDay={showFormForDay}
+                                    onAddTask={handleAddTask}
+                                    onCreateTask={handleCreateTask}
+                                    onCancelForm={handleCancelForm}
+                                    isCreating={createTaskMutation.isPending}
+                                    showDeleteButton={day.date === daysData[0]?.date}
+                                    deleteButton={<DeleteAllTasksButton />}
+                                />
+                            ))}
+                        </div>
+                        
+                        <DragOverlay>
+                            {activeTask ? (
+                                <div className="transform rotate-6 scale-110 opacity-95 drag-glow animate-pulse">
+                                    <div className="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-2 rounded-xl shadow-2xl ring-4 ring-blue-200 ring-opacity-60">
+                                        <div className="bg-white rounded-lg shadow-inner">
+                                            <TaskCard
+                                                id={activeTask.id}
+                                                title={activeTask.title}
+                                                status={activeTask.status}
+                                                level={activeTask.level}
+                                                isCompleted={activeTask.isCompleted}
+                                                createdAt={activeTask.createdAt}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col gap-5">
-                                    {day.tasks.map((task) => (
-                                        <TaskCard
-                                            key={task.id}
-                                            {...task}
-                                        />
-                                    ))}
-                                    <Button
-                                        className="w-full mt-2 flex items-center gap-2"
-                                        onClick={() => handleAddTask(day.date)}
-                                        disabled={createTaskMutation.isPending}
-                                    >
-                                        {createTaskMutation.isPending ? 'Creating...' : 'Create task'}
-                                    </Button>
-                                    {showFormForDay === day.date && (
-                                        <TaskForm
-                                            onSubmit={(data) => handleCreateTask(data, day.date)}
-                                            onCancel={handleCancelForm}
-                                            variant="primary"
-                                            showHeader={true}
-                                            className="mt-4"
-                                            disabled={createTaskMutation.isPending}
-                                            targetDate={day.date}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                            ) : null}
+                        </DragOverlay>
+                    </DndContext>
                 </div>
             </div>
         </>

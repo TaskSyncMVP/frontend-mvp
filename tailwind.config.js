@@ -21,6 +21,48 @@ module.exports = {
   			xl: 'var(--text-xl)',
   			'2xl': 'var(--text-2xl)'
   		},
+  		animation: {
+  			'wiggle': 'wiggle 0.5s ease-in-out',
+  			'float': 'float 2s ease-in-out infinite',
+  			'glow': 'glow 1.5s ease-in-out infinite',
+  			'drop-zone-glow': 'dropZoneGlow 1s ease-in-out infinite',
+  			'drop-success': 'dropSuccess 0.4s ease-in-out',
+  			'bounce-invalid': 'bounce 0.6s ease-in-out',
+  		},
+  		keyframes: {
+  			wiggle: {
+  				'0%, 7%': { transform: 'rotateZ(0)' },
+  				'15%': { transform: 'rotateZ(-15deg)' },
+  				'20%': { transform: 'rotateZ(10deg)' },
+  				'25%': { transform: 'rotateZ(-10deg)' },
+  				'30%': { transform: 'rotateZ(6deg)' },
+  				'35%': { transform: 'rotateZ(-4deg)' },
+  				'40%, 100%': { transform: 'rotateZ(0)' },
+  			},
+  			float: {
+  				'0%, 100%': { transform: 'translateY(0px)' },
+  				'50%': { transform: 'translateY(-10px)' },
+  			},
+  			glow: {
+  				'0%, 100%': { boxShadow: '0 0 5px rgba(59, 130, 246, 0.5)' },
+  				'50%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6)' },
+  			},
+  			dropZoneGlow: {
+  				'0%, 100%': { boxShadow: 'inset 0 0 10px rgba(59, 130, 246, 0.3)' },
+  				'50%': { boxShadow: 'inset 0 0 20px rgba(59, 130, 246, 0.6)' },
+  			},
+  			dropSuccess: {
+  				'0%': { transform: 'scale(1)' },
+  				'50%': { transform: 'scale(1.1)' },
+  				'100%': { transform: 'scale(1)' },
+  			},
+  			bounce: {
+  				'0%, 20%, 53%, 80%, 100%': { transform: 'translate3d(0, 0, 0)' },
+  				'40%, 43%': { transform: 'translate3d(0, -10px, 0)' },
+  				'70%': { transform: 'translate3d(0, -5px, 0)' },
+  				'90%': { transform: 'translate3d(0, -2px, 0)' },
+  			},
+  		},
   		colors: {
   			primary: {
   				'30': 'var(--primary-30)',
